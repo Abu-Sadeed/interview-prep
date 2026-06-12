@@ -1,13 +1,14 @@
-import {useEffect, useMemo, useState} from 'react';
-import {Link, useNavigate, useParams} from 'react-router-dom';
-import {ALL_BLOCKS} from '../../data/content';
-import {useProgress} from '../../hooks/useProgress';
-import {useTierState} from '../../hooks/useTierState';
-import type {Tier} from '../../types/content';
-import {chipClass, freqClass, freqLabel} from '../../utils/classes';
-import {getBlockById} from '../../utils/content';
-import {buildGrillPrompt} from '../../utils/grill';
-import {RichHtml} from './RichHtml';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ALL_BLOCKS } from '../../data/content';
+import { useProgress } from '../../hooks/useProgress';
+import { useTierState } from '../../hooks/useTierState';
+import type { Tier } from '../../types/content';
+import { chipClass, freqClass, freqLabel } from '../../utils/classes';
+import { getBlockById } from '../../utils/content';
+import { buildGrillPrompt } from '../../utils/grill';
+import { RichHtml } from './RichHtml';
+import { TierBlock } from './TierBlock';
 
 const tierLabels = [
 	'Tier 1 — Beginner',
@@ -194,92 +195,5 @@ export function BlockDetail() {
 				</button>
 			</div>
 		</div>
-	);
-}
-
-function TierBlock({
-	tier,
-	tierIndex,
-	open,
-	onToggle,
-}: {
-	tier: Tier;
-	tierIndex: number;
-	open: boolean;
-	onToggle: () => void;
-}) {
-	return (
-		<section
-			className={`tier-panel ${tierIndex === 0 ? 'tier-t1' : tierIndex === 1 ? 'tier-t2' : 'tier-t3'}`}>
-			<button type="button" onClick={onToggle} className="tier-header">
-				<div
-					style={{
-						display: 'flex',
-						alignItems: 'center',
-						gap: '0.75rem',
-					}}>
-					<span className="tier-label">{tierLabels[tierIndex]}</span>
-					{/* <span className="tier-title">{tier.level}</span> */}
-				</div>
-				<div
-					style={{
-						display: 'flex',
-						alignItems: 'center',
-						gap: '0.75rem',
-					}}>
-					<span className="tier-meta">{tier.time}</span>
-					<span
-						className={`tier-chevron ${open ? 'tier-chevron-open' : ''}`}>
-						▾
-					</span>
-				</div>
-			</button>
-			{open && (
-				<div className="tier-body">
-					{tier.sections.map((section) => (
-						<div
-							key={section.heading}
-							style={{marginBottom: '1.25rem'}}>
-							<div className="tier-section-heading">
-								{section.heading}
-							</div>
-							<ul className="tier-list">
-								{section.items.map((item) => (
-									<RichHtml key={item} html={item} />
-								))}
-							</ul>
-						</div>
-					))}
-					{tier.traps.length > 0 && (
-						<div className="tier-traps">
-							<div className="tier-traps-title">
-								Common Interview Traps
-							</div>
-							<ul className="tier-traps-list">
-								{tier.traps.map((trap) => (
-									<li key={trap}>Trap: {trap}</li>
-								))}
-							</ul>
-						</div>
-					)}
-					{tier.checkpoint.length > 0 && (
-						<div className="tier-checkpoint">
-							<div className="tier-checkpoint-title">
-								Self-Check Before Advancing
-							</div>
-							<ul className="tier-checkpoint-list">
-								{tier.checkpoint.map((question) => (
-									<li key={question}>Question: {question}</li>
-								))}
-							</ul>
-							<div className="tier-checkpoint-hint">
-								If you can answer all questions confidently
-								without notes → advance to next tier.
-							</div>
-						</div>
-					)}
-				</div>
-			)}
-		</section>
 	);
 }
