@@ -34,18 +34,23 @@ export function Overview() {
       {Object.entries(phases).map(([phase, blocks]) => (
         <section key={phase} style={{ marginBottom: '2rem' }}>
           <div style={{ marginBottom: '0.75rem', fontFamily: 'JetBrains Mono, ui-monospace, SFMono-Regular, monospace', fontSize: '0.625rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text3)' }}>{phase}</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: '0.5rem' }}>
+          <div style={{ display: 'grid', gap: '0.5rem' }}>
             {blocks.map((block) => (
               <Link
                 key={block.id}
                 to={`/block/${block.id}`}
                 className="card"
+                style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem' }}
               >
-                <div className="card-meta">Block {String(block.id).padStart(2, '0')}</div>
-                <div className="card-title" style={{ margin: '0.25rem 0' }}>{block.title.split(' — ')[0]}</div>
-                <div style={{ fontSize: '0.6875rem', color: 'var(--color-text3)' }}>{block.title.split(' — ')[1] || block.subtitle.split(',')[0]}</div>
-                <span className={`tag ${freqClass(block.freq)}`} style={{ marginTop: '0.5rem', display: 'inline-block' }}>{freqLabel(block.freq)}</span>
-                <span className={`chip ${chipClass(block.chip)}`} style={{ marginLeft: '0.5rem' }}>{block.chip}</span>
+                <span style={{ fontFamily: 'JetBrains Mono, ui-monospace, SFMono-Regular, monospace', fontSize: '0.625rem', color: 'var(--color-text3)' }}>Block {String(block.id).padStart(2, '0')}</span>
+                <div>
+                  <div style={{ fontSize: '0.6875rem', fontWeight: 400, color: 'var(--color-text)' }}>{block.title.split(' — ')[0]}</div>
+                  <div style={{ fontSize: '0.5625rem', fontWeight: 400, color: 'var(--color-text3)', marginTop: '2px' }}>{block.title.split(' — ')[1] || block.subtitle.split(',')[0]}</div>
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <span className={`tag ${freqClass(block.freq)}`}>{freqLabel(block.freq)}</span>
+                  <span className={`chip ${chipClass(block.chip)}`}>{block.chip}</span>
+                </div>
               </Link>
             ))}
           </div>

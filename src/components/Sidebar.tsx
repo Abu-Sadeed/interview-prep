@@ -51,7 +51,31 @@ export function Sidebar() {
                 : ''
             }`}
           >
-            {filter === 'all' ? 'All' : filter === 'high' ? 'HIGH FREQ' : filter === 'med' ? 'MED FREQ' : 'LOW FREQ'}
+            {filter === 'all' ? (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
+                <span style={{ display: 'inline-flex', gap: '2px' }}>
+                  <span className="filter-dot filter-dot-red" />
+                  <span className="filter-dot filter-dot-amber" />
+                  <span className="filter-dot filter-dot-gray" />
+                </span>
+                All
+              </span>
+            ) : filter === 'high' ? (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
+                <span className="filter-dot filter-dot-red" />
+                High
+              </span>
+            ) : filter === 'med' ? (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
+                <span className="filter-dot filter-dot-amber" />
+                Med
+              </span>
+            ) : (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
+                <span className="filter-dot filter-dot-gray" />
+                Low
+              </span>
+            )}
           </button>
         ))}
       </div>
