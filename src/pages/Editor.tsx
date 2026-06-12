@@ -119,82 +119,82 @@ export function Editor() {
   };
 
   return (
-    <main className="grid min-h-[calc(100vh-3.25rem)] grid-cols-[minmax(0,1fr)_420px] gap-6 p-6">
-      <section className="rounded-lg border border-border bg-bg2 p-5 dark:border-slate-800 dark:bg-slate-900">
-        <div className="mb-5">
-          <h1 className="text-2xl font-bold text-text dark:text-slate-100">Content Editor</h1>
-          <p className="text-text2">Create a validated Block object and download the generated TypeScript content file for manual merge.</p>
+    <main className="editor-layout">
+      <section className="editor-panel">
+        <div style={{ marginBottom: '1.25rem' }}>
+          <h1 className="editor-title">Content Editor</h1>
+          <p className="editor-subtitle">Create a validated Block object and download the generated TypeScript content file for manual merge.</p>
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="text-sm text-text2">
+        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+          <label className="form-group">
             Topic
-            <select value={topic} onChange={(event) => updateTopic(event.target.value as TopicKey)} className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 text-text dark:border-slate-700 dark:bg-slate-950">
+            <select value={topic} onChange={(event) => updateTopic(event.target.value as TopicKey)} className="form-input">
               {topicOptions.map((option) => <option key={option.key} value={option.key}>{option.label}</option>)}
             </select>
           </label>
-          <label className="text-sm text-text2">
+          <label className="form-group">
             Frequency
-            <select value={form.freq} onChange={(event) => update('freq', event.target.value as Frequency)} className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 text-text dark:border-slate-700 dark:bg-slate-950">
+            <select value={form.freq} onChange={(event) => update('freq', event.target.value as Frequency)} className="form-input">
               <option value="high">high</option>
               <option value="med">med</option>
               <option value="low">low</option>
             </select>
           </label>
-          <label className="text-sm text-text2">
+          <label className="form-group">
             Block ID
-            <input type="number" value={form.id} onChange={(event) => update('id', Number(event.target.value))} className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 text-text dark:border-slate-700 dark:bg-slate-950" />
+            <input type="number" value={form.id} onChange={(event) => update('id', Number(event.target.value))} className="form-input" />
           </label>
-          <label className="text-sm text-text2">
+          <label className="form-group">
             Chip
-            <input value={form.chip} onChange={(event) => update('chip', event.target.value)} list="chip-options" className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 text-text dark:border-slate-700 dark:bg-slate-950" />
+            <input value={form.chip} onChange={(event) => update('chip', event.target.value)} list="chip-options" className="form-input" />
             <datalist id="chip-options">{chipOptions.map((chip) => <option key={chip} value={chip} />)}</datalist>
           </label>
-          <label className="text-sm text-text2 md:col-span-2">
+          <label className="form-group" style={{ gridColumn: 'span 2' }}>
             Phase
-            <input value={form.phase} onChange={(event) => update('phase', event.target.value)} className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 text-text dark:border-slate-700 dark:bg-slate-950" />
+            <input value={form.phase} onChange={(event) => update('phase', event.target.value)} className="form-input" />
           </label>
-          <label className="text-sm text-text2 md:col-span-2">
+          <label className="form-group" style={{ gridColumn: 'span 2' }}>
             Title
-            <input value={form.title} onChange={(event) => update('title', event.target.value)} className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 text-text dark:border-slate-700 dark:bg-slate-950" />
+            <input value={form.title} onChange={(event) => update('title', event.target.value)} className="form-input" />
           </label>
-          <label className="text-sm text-text2 md:col-span-2">
+          <label className="form-group" style={{ gridColumn: 'span 2' }}>
             Subtitle
-            <input value={form.subtitle} onChange={(event) => update('subtitle', event.target.value)} className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 text-text dark:border-slate-700 dark:bg-slate-950" />
+            <input value={form.subtitle} onChange={(event) => update('subtitle', event.target.value)} className="form-input" />
           </label>
-          <label className="text-sm text-text2 md:col-span-2">
+          <label className="form-group" style={{ gridColumn: 'span 2' }}>
             Prerequisites
-            <input value={form.prereqs.join(', ')} onChange={(event) => update('prereqs', parsePrereqs(event.target.value))} placeholder="1, 2, 9" className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 text-text dark:border-slate-700 dark:bg-slate-950" />
+            <input value={form.prereqs.join(', ')} onChange={(event) => update('prereqs', parsePrereqs(event.target.value))} placeholder="1, 2, 9" className="form-input" />
           </label>
-          <label className="text-sm text-text2 md:col-span-2">
+          <label className="form-group" style={{ gridColumn: 'span 2' }}>
             Tiers JSON
-            <textarea value={tierJson} onChange={(event) => setTierJson(event.target.value)} rows={16} className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 font-mono text-[11px] text-text dark:border-slate-700 dark:bg-slate-950" />
+            <textarea value={tierJson} onChange={(event) => setTierJson(event.target.value)} rows={16} className="form-input" />
           </label>
-          <label className="text-sm text-text2 md:col-span-2">
+          <label className="form-group" style={{ gridColumn: 'span 2' }}>
             Grill Prompt
-            <textarea value={form.grill} onChange={(event) => update('grill', event.target.value)} rows={10} className="mt-1 w-full rounded border border-border2 bg-bg3 px-3 py-2 font-mono text-[11px] text-text dark:border-slate-700 dark:bg-slate-950" />
+            <textarea value={form.grill} onChange={(event) => update('grill', event.target.value)} rows={10} className="form-input" />
           </label>
         </div>
         {errors.length > 0 && (
-          <div className="mt-5 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-300">
-            <ul className="list-inside list-disc">{errors.map((error) => <li key={error}>{error}</li>)}</ul>
+          <div className="form-errors">
+            <ul>{errors.map((error) => <li key={error}>{error}</li>)}</ul>
           </div>
         )}
-        <div className="mt-5 flex gap-3">
-          <button type="button" onClick={validate} className="rounded border border-blue-300 bg-blue-50 px-4 py-2 font-mono text-[11px] font-semibold text-blue-700 dark:border-blue-900/40 dark:bg-blue-950/30 dark:text-blue-300">Validate</button>
-          <button type="button" onClick={download} className="rounded border border-emerald-300 bg-emerald-50 px-4 py-2 font-mono text-[11px] font-semibold text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-300">Download topic file</button>
-          <button type="button" onClick={() => { const option = topicOptions.find((item) => item.key === topic); setForm({ id: getNextBlockId(), phase: option?.phase || form.phase, chip: option?.chip || form.chip, freq: 'high', title: '', subtitle: '', prereqs: [], tiers: [], grill: '' }); setTierJson('[]'); setErrors([]); }} className="rounded border border-border2 bg-transparent px-4 py-2 font-mono text-[11px] text-text2 dark:border-slate-700">Reset</button>
+        <div className="form-actions">
+          <button type="button" onClick={validate} className="form-btn form-btn-primary">Validate</button>
+          <button type="button" onClick={download} className="form-btn form-btn-success">Download topic file</button>
+          <button type="button" onClick={() => { const option = topicOptions.find((item) => item.key === topic); setForm({ id: getNextBlockId(), phase: option?.phase || form.phase, chip: option?.chip || form.chip, freq: 'high', title: '', subtitle: '', prereqs: [], tiers: [], grill: '' }); setTierJson('[]'); setErrors([]); }} className="form-btn form-btn-ghost">Reset</button>
         </div>
       </section>
-      <aside className="rounded-lg border border-border bg-bg2 p-5 dark:border-slate-800 dark:bg-slate-900">
-        <div className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-text3">JSON Preview</div>
+      <aside className="editor-panel">
+        <div className="json-preview-label">JSON Preview</div>
         {previewBlock ? (
-          <pre className="max-h-[calc(100vh-9rem)] overflow-auto rounded border border-border2 bg-bg4 p-3 font-mono text-[11px] leading-6 text-text2 dark:border-slate-700">{JSON.stringify(previewBlock, null, 2)}</pre>
+          <pre className="json-preview">{JSON.stringify(previewBlock, null, 2)}</pre>
         ) : (
-          <div className="rounded border border-border2 bg-bg4 p-3 text-sm text-text2 dark:border-slate-700">Invalid tier JSON.</div>
+          <div className="json-preview">Invalid tier JSON.</div>
         )}
-        <div className="mt-5 rounded border border-border2 bg-bg3 p-4 text-sm leading-6 text-text2 dark:border-slate-700 dark:bg-slate-950">
-          <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-text3">Export behavior</div>
-          <p className="mt-2">The downloaded file contains the selected topic plus the new block. Merge it into <code className="rounded bg-bg4 px-1 text-teal-300">src/data/{topic}_content.ts</code> and import it from <code className="rounded bg-bg4 px-1 text-teal-300">src/data/content.ts</code>.</p>
+        <div className="json-preview-hint">
+          <div className="json-preview-label">Export behavior</div>
+          <p style={{ marginTop: '0.5rem' }}>The downloaded file contains the selected topic plus the new block. Merge it into <code>src/data/{topic}_content.ts</code> and import it from <code>src/data/content.ts</code>.</p>
         </div>
       </aside>
     </main>

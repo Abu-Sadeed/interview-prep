@@ -9,17 +9,15 @@ interface HeaderProps {
 
 export function Header({ completed, total, percent }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 flex h-13 items-center gap-4 border-b border-border bg-bg2 px-6 dark:border-slate-800 dark:bg-slate-950">
-      <Link to="/" className="font-mono text-xs font-semibold tracking-[0.04em] text-blue-500 dark:text-blue-300">
-        senior<em className="not-italic text-text3">.</em>prep <em className="not-italic text-text3">// v4.0</em>
+    <header className="app-header">
+      <Link to="/" className="app-header-brand">
+        senior<em className="app-header-brand-muted">.</em>prep <em className="app-header-brand-muted">// v4.0</em>
       </Link>
-      <div className="max-w-96 flex-1">
-        <div className="h-0.5 overflow-hidden rounded bg-border">
-          <div className="h-full rounded bg-gradient-to-r from-blue-500 to-emerald-400 transition-[width] duration-500" style={{ width: `${percent}%` }} />
-        </div>
+      <div className="progress-track">
+        <div className="progress-fill" style={{ width: `${percent}%` }} />
       </div>
-      <div className="font-mono text-[11px] text-text3">
-        <strong className="text-blue-500 dark:text-blue-300">{completed}</strong> / {total} blocks complete
+      <div className="app-header-text">
+        <strong>{completed}</strong> / {total} blocks complete
       </div>
       <ThemeToggle />
     </header>

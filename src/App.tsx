@@ -8,11 +8,11 @@ export function Layout() {
   const { progress } = useProgress();
 
   return (
-    <div className="min-h-screen bg-bg text-text dark:bg-slate-950 dark:text-slate-100">
+    <div className="app-layout">
       <Header completed={progress.count} total={ALL_BLOCKS.length} percent={progress.percent} />
-      <div className="grid grid-cols-[272px_minmax(0,1fr)]">
+      <div className="app">
         <Sidebar />
-        <main className="min-w-0">
+        <main className="main-content">
           <Outlet />
         </main>
       </div>
