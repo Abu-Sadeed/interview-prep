@@ -1,5 +1,5 @@
-import type { Tier } from '../../types/content';
-import { RichHtml } from '../block/RichHtml';
+import type {Tier} from '../../types/content';
+import {RichHtml} from '../block/RichHtml';
 
 interface TierBlockProps {
 	tier: Tier;
@@ -14,7 +14,12 @@ const tierLabels = [
 	'Tier 3 — Advanced',
 ];
 
-export function TierBlock({ tier, tierIndex, open, onToggle }: TierBlockProps) {
+export function TierBlock({
+	tier,
+	tierIndex,
+	open,
+	onToggle,
+}: Readonly<TierBlockProps>) {
 	return (
 		<section
 			className={`tier-panel ${tierIndex === 0 ? 'tier-t1' : tierIndex === 1 ? 'tier-t2' : 'tier-t3'}`}>
