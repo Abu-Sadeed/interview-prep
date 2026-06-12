@@ -9,12 +9,10 @@ export function useTierState(blockId: number, count: number) {
   });
 
   useEffect(() => {
-    setOpen((current) => {
-      if (current.length === count) {
-        return current;
-      }
-      return Array.from({ length: count }, (_, index) => current[index] !== false);
-    });
+    setOpen(Array.from({ length: count }, (_, index) => {
+      const key = `tier_${blockId}_${index}`;
+      return sessionStorage.getItem(key) !== 'closed';
+    }));
   }, [blockId, count]);
 
   const toggle = (index: number) => {

@@ -6,8 +6,8 @@ export function useProgress() {
   const [done, setDone] = useState<Set<number>>(() => readDoneBlocks());
 
   const progress = useMemo(() => {
-    const count = done.size;
-    return { count, percent: count > 0 ? Math.round((count / ALL_BLOCKS.length) * 100) : 0 };
+    const count = Math.min(done.size, ALL_BLOCKS.length);
+    return { count, percent: Math.min(100, Math.max(0, Math.round((count / ALL_BLOCKS.length) * 100))) };
   }, [done]);
 
   const toggleDone = (id: number) => {

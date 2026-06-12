@@ -7,7 +7,13 @@ export function readDoneBlocks(): Set<number> {
   try {
     const raw = localStorage.getItem(DONE_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    return new Set(Array.isArray(parsed) ? parsed.map(Number).filter(Number.isFinite) : []);
+    return new Set(
+      Array.isArray(parsed)
+        ? parsed
+            .map(Number)
+            .filter((id) => Number.isFinite(id) && ALL_BLOCKS.some((block) => block.id === id))
+        : [],
+    );
   } catch {
     return new Set<number>();
   }
@@ -27,11 +33,6 @@ export function groupBlocksByPhase(blocks: Block[] = ALL_BLOCKS) {
     groups[block.phase].push(block);
     return groups;
   }, {});
-}
-
-export function getPhaseForTopic(topic: string, chip: string) {
-  const existing = ALL_BLOCKS.find((block) => block.chip === chip || block.phase === topic);
-  return existing?.phase || topic;
 }
 
 export function parsePrereqs(value: string): number[] {

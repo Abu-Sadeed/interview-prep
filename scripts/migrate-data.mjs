@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import vm from 'node:vm';
+import { parse } from '@babel/parser';
 
 const root = process.cwd();
 const files = ['data-part1.js', 'data-part2.js', 'data-part3.js', 'data-part4.js'];
@@ -8,9 +8,8 @@ const blocks = [];
 
 for (const file of files) {
   const code = fs.readFileSync(path.join(root, file), 'utf8');
-  const context = { globalThis: {} };
-  vm.runInNewContext(code, context);
-  const partBlocks = context.globalThis[`BLOCKS_PART${files.indexOf(file) + 1}`] || [];
+  const ast = parse(code, { sourceType: 'script' });
+  const partBlocks = extractBlockArray(ast, file);
   blocks.push(...partBlocks);
 }
 
@@ -55,13 +54,12 @@ const groups = {
   typescript: [64],
 };
 
+validateGroups(normalized, groups);
+
 const header = "import type { Block } from '../types/content';\n\n";
 
-for (const [topic, ids] of Object.entries(groups)) {
-  const selected = normalized.filter((block) => ids.includes(block.id));
-  if (selected.length === 0) {
-    throw new Error(`No blocks found for ${topic}`);
-  }
+for (const [topic, topicIds] of Object.entries(groups)) {
+  const selected = normalized.filter((block) => topicIds.includes(block.id));
   const content = `${header}export const ${topic}Content: Block[] = ${JSON.stringify(selected, null, 2)};\n\nexport default ${topic}Content;\n`;
   fs.writeFileSync(path.join(root, 'src', 'data', `${topic}_content.ts`), content);
 }
@@ -99,3 +97,90 @@ const progress = {
 fs.writeFileSync(path.join(root, 'plan-progress.json'), `${JSON.stringify(progress, null, 2)}\n`);
 
 console.log(`Migrated ${normalized.length} blocks into ${Object.keys(groups).length} topic files.`);
+
+function extractBlockArray(ast, fileName) {
+  const assignment = ast.program.body.find((statement) => {
+    return statement.type === 'ExpressionStatement'
+      && statement.expression.type === 'AssignmentExpression'
+      && statement.expression.operator === '='
+      && statement.expression.left.type === 'MemberExpression'
+      && statement.expression.left.object.type === 'Identifier'
+      && statement.expression.left.object.name === 'globalThis'
+      && statement.expression.left.property.type === 'Identifier'
+      && /^BLOCKS_PART\d+$/.test(statement.expression.left.property.name);
+  });
+
+  if (!assignment) {
+    throw new Error(`Could not find globalThis.BLOCKS_PART assignment in ${fileName}`);
+  }
+
+  if (assignment.expression.right.type !== 'ArrayExpression') {
+    throw new Error(`Expected ${fileName} assignment to be an array`);
+  }
+
+  return assignment.expression.right.elements.map((element) => {
+    if (!element || element.type === 'SpreadElement') {
+      throw new Error(`Unexpected spread or hole in ${fileName}`);
+    }
+    return evaluateAst(element);
+  });
+}
+
+function evaluateAst(node) {
+  switch (node.type) {
+    case 'ObjectExpression':
+      return node.properties.reduce((object, property) => {
+        if (property.type !== 'ObjectProperty') {
+          throw new Error(`Unsupported object property type: ${property.type}`);
+        }
+        const key = propertyKey(property.key);
+        object[key] = evaluateAst(property.value);
+        return object;
+      }, {});
+    case 'ArrayExpression':
+      return node.elements.map((element) => {
+        if (!element || element.type === 'SpreadElement') {
+          throw new Error('Unexpected spread or hole in array');
+        }
+        return evaluateAst(element);
+      });
+    case 'StringLiteral':
+    case 'NumericLiteral':
+    case 'BooleanLiteral':
+    case 'NullLiteral':
+      return node.value;
+    case 'TemplateLiteral': {
+      if (node.expressions.length > 0) {
+        throw new Error('Template literal expressions are not supported in data files');
+      }
+      return node.quasis.map((quasi) => quasi.value.cooked).join('');
+    }
+    default:
+      throw new Error(`Unsupported data literal: ${node.type}`);
+  }
+}
+
+function propertyKey(key) {
+  if (key.type === 'Identifier' || key.type === 'StringLiteral' || key.type === 'NumericLiteral') {
+    return String(key.name ?? key.value);
+  }
+  throw new Error(`Unsupported object key type: ${key.type}`);
+}
+
+function validateGroups(blocks, groups) {
+  const sourceIds = blocks.map((block) => block.id);
+  const groupedIds = Object.values(groups).flat();
+  const duplicates = groupedIds.filter((id, index) => groupedIds.indexOf(id) !== index);
+  const missing = sourceIds.filter((id) => !groupedIds.includes(id));
+  const unknown = groupedIds.filter((id) => !sourceIds.includes(id));
+
+  if (duplicates.length > 0) {
+    throw new Error(`Topic groups contain duplicate block ids: ${[...new Set(duplicates)].join(', ')}`);
+  }
+  if (missing.length > 0) {
+    throw new Error(`Topic groups are missing block ids: ${missing.join(', ')}`);
+  }
+  if (unknown.length > 0) {
+    throw new Error(`Topic groups contain unknown block ids: ${unknown.join(', ')}`);
+  }
+}

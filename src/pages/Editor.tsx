@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { ALL_BLOCKS, TOPIC_CONTENT } from '../data/content';
 import type { Block, Frequency, Tier, TopicKey } from '../types/content';
 import { downloadTextFile, serializeContentFile } from '../utils/fileExport';
-import { getPhaseForTopic, parsePrereqs } from '../utils/content';
+import { parsePrereqs } from '../utils/content';
+import { sanitizeBlock } from '../utils/sanitize';
 
 const tierSchema = z.object({
   level: z.enum(['Beginner', 'Intermediate', 'Advanced']),
@@ -64,7 +65,8 @@ export function Editor() {
   const parsedTiers = useMemo(() => parseTiers(tierJson), [tierJson]);
   const previewBlock = useMemo<Block | null>(() => {
     if (!parsedTiers.ok) return null;
-    return { ...form, prereqs: parsePrereqs(String(form.prereqs.join(','))), tiers: parsedTiers.value };
+    const block = { ...form, prereqs: parsePrereqs(String(form.prereqs.join(','))), tiers: parsedTiers.value };
+    return sanitizeBlock(block);
   }, [form, parsedTiers]);
 
   const update = <K extends keyof Block>(key: K, value: Block[K]) => {
@@ -88,6 +90,18 @@ export function Editor() {
       setErrors(result.error.issues.map((issue) => `${issue.path.join('.') || 'root'}: ${issue.message}`));
       return null;
     }
+    const existingIds = new Set(ALL_BLOCKS.map((block) => block.id));
+    const duplicateId = existingIds.has(result.data.id);
+    const invalidPrereqs = result.data.prereqs.filter((id) => !existingIds.has(id) || id === result.data.id);
+
+    if (duplicateId || invalidPrereqs.length > 0) {
+      const messages = [];
+      if (duplicateId) messages.push(`Block ${result.data.id} already exists.`);
+      if (invalidPrereqs.length > 0) messages.push(`Invalid prerequisite ids: ${invalidPrereqs.join(', ')}`);
+      setErrors(messages);
+      return null;
+    }
+
     setErrors([]);
     return result.data;
   };
