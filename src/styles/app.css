@@ -53,80 +53,80 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-	background: #f4f7fb;
+	background: var(--color-bg2);
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #c7d2e3;
+	background: var(--color-border3);
 	border-radius: 3px;
 }
 
 .dark .app-header {
-	border-bottom-color: #1e2736;
-	background: #090c10;
+	border-bottom-color: var(--color-border);
+	background: var(--color-bg);
 }
 
 .dark .app-header-brand {
-	color: #60a5fa;
+	color: var(--color-blue);
 }
 
 .dark .app-header-text strong {
-	color: #60a5fa;
+	color: var(--color-blue);
 }
 
 .dark .app-btn {
-	border-color: #334155;
-	color: #94a3b8;
+	border-color: var(--color-border2);
+	color: var(--color-text3);
 }
 
 .dark .app-btn:hover {
-	border-color: #60a5fa;
-	color: #60a5fa;
+	border-color: var(--color-blue);
+	color: var(--color-blue);
 }
 
 .dark .app-sidebar {
-	border-right-color: #1e2736;
-	background: #090c10;
+	border-right-color: var(--color-border);
+	background: var(--color-bg);
 }
 
 .dark .app-sidebar-header {
-	border-bottom-color: #1e2736;
+	border-bottom-color: var(--color-border);
 }
 
 .dark .app-search {
-	border-color: #334155;
-	background: #111827;
-	color: #e5e7eb;
+	border-color: var(--color-border2);
+	background: var(--color-bg2);
+	color: var(--color-text3);
 }
 
 .dark .app-search:focus {
-	border-color: #60a5fa;
+	border-color: var(--color-blue);
 }
 
 .dark .app-search::placeholder {
-	color: #64748b;
+	color: var(--color-text3);
 }
 
 .dark .filter-bar {
-	border-bottom-color: #1e2736;
+	border-bottom-color: var(--color-border);
 }
 
 .dark .filter-btn-active-all {
 	border-color: rgba(96, 165, 250, 0.4);
-	background: #172554;
-	color: #60a5fa;
+	background: var(--color-bg2);
+	color: var(--color-blue);
 }
 
 .dark .filter-btn-active-high {
 	border-color: rgba(248, 113, 113, 0.4);
-	background: #450a0a;
-	color: #fca5a5;
+	background: var(--color-bg2);
+	color: var(--color-red);
 }
 
 .dark .filter-btn-active-med {
 	border-color: rgba(251, 191, 36, 0.4);
-	background: #451a03;
-	color: #fcd34d;
+	background: var(--color-bg2);
+	color: var(--color-yellow);
 }
 
 .dark .filter-btn-active-low {
