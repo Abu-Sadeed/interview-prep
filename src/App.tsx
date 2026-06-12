@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
+import { Header } from './components/layout/Header';
+import { Sidebar } from './components/layout/Sidebar';
 import { useProgress } from './hooks/useProgress';
 import { ALL_BLOCKS } from './data/content';
 

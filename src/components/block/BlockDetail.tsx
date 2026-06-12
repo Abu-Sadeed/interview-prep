@@ -1,12 +1,12 @@
 import {useEffect, useMemo, useState} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import {ALL_BLOCKS} from '../data/content';
-import {useProgress} from '../hooks/useProgress';
-import {useTierState} from '../hooks/useTierState';
-import type {Tier} from '../types/content';
-import {chipClass, freqClass, freqLabel} from '../utils/classes';
-import {getBlockById} from '../utils/content';
-import {buildGrillPrompt} from '../utils/grill';
+import {ALL_BLOCKS} from '../../data/content';
+import {useProgress} from '../../hooks/useProgress';
+import {useTierState} from '../../hooks/useTierState';
+import type {Tier} from '../../types/content';
+import {chipClass, freqClass, freqLabel} from '../../utils/classes';
+import {getBlockById} from '../../utils/content';
+import {buildGrillPrompt} from '../../utils/grill';
 import {RichHtml} from './RichHtml';
 
 const tierLabels = [
@@ -219,7 +219,7 @@ function TierBlock({
 						gap: '0.75rem',
 					}}>
 					<span className="tier-label">{tierLabels[tierIndex]}</span>
-					<span className="tier-title">{tier.level}</span>
+					{/* <span className="tier-title">{tier.level}</span> */}
 				</div>
 				<div
 					style={{

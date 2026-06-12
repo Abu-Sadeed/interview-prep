@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ALL_BLOCKS } from '../data/content';
-import type { Block } from '../types/content';
-import { useProgress } from '../hooks/useProgress';
-import { groupBlocksByPhase } from '../utils/content';
-import { freqClass } from '../utils/classes';
+import { ALL_BLOCKS } from '../../data/content';
+import type { Block } from '../../types/content';
+import { useProgress } from '../../hooks/useProgress';
+import { groupBlocksByPhase } from '../../utils/content';
+import { freqClass } from '../../utils/classes';
 
 const filters: Array<'all' | 'high' | 'med' | 'low'> = ['all', 'high', 'med', 'low'];
 

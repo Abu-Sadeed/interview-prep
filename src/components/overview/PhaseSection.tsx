@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import type { Block } from '../types/content';
-import { chipClass, freqClass, freqLabel } from '../utils/classes';
+import type { Block } from '../../types/content';
+import { chipClass, freqClass, freqLabel } from '../../utils/classes';
 
 interface PhaseSectionProps {
 	phase: string;

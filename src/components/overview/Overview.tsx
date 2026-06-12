@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ALL_BLOCKS } from '../data/content';
-import { useProgress } from '../hooks/useProgress';
-import { groupBlocksByPhase } from '../utils/content';
-import { parseTierTime } from '../utils/grill';
-import { chipClass, freqClass, freqLabel } from '../utils/classes';
+import { ALL_BLOCKS } from '../../data/content';
+import { useProgress } from '../../hooks/useProgress';
+import { groupBlocksByPhase } from '../../utils/content';
+import { parseTierTime } from '../../utils/grill';
+import { chipClass, freqClass, freqLabel } from '../../utils/classes';
 import { StatsGrid } from './StatsGrid';
 import { StudyStrategy } from './StudyStrategy';
 import { PhaseSection } from './PhaseSection';
