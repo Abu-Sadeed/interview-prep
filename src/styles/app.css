@@ -1271,6 +1271,24 @@ body {
 	gap: 0.5rem;
 }
 
+ul.tier-list {
+	padding-left: 0;
+	list-style: none;
+}
+
+ul.tier-list > .rich-html {
+	display: block;
+	/* 1. Indent the entire block of text */
+	padding-left: 2em;
+	/* 2. Pull only the first line back to the left margin */
+	text-indent: -1em;
+	line-height: 1.5;
+}
+
+ul.tier-list > .rich-html::before {
+	content: '-> ';
+}
+
 .tier-traps {
 	margin-top: 1rem;
 	border-radius: 0.25rem;
@@ -1755,16 +1773,22 @@ textarea.form-input {
 	font-size: 0.75rem;
 }
 
+.rich-html {
+	line-height: 1;
+	color: var(--color-text2);
+	font-size: 13px;
+}
+
 .rich-html b {
-	color: inherit;
 	font-weight: 500;
+	color: var(--color-text);
 }
 
 .rich-html code {
 	border-radius: 3px;
-	background: rgba(15, 23, 42, 0.95);
+	background: var(--color-bg4);
 	padding: 1px 5px;
-	color: #2dd4bf;
+	color: #0d9488;
 	font-family: 'JetBrains Mono', monospace;
 	font-size: 11px;
 }

@@ -51,7 +51,11 @@ export function TierBlock({
 							</div>
 							<ul className="tier-list">
 								{section.items.map((item) => (
-									<RichHtml key={item} html={item} />
+									<RichHtml
+										className="rich-html"
+										key={item}
+										html={item}
+									/>
 								))}
 							</ul>
 						</div>

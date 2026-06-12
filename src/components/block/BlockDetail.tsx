@@ -1,14 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ALL_BLOCKS } from '../../data/content';
-import { useProgress } from '../../hooks/useProgress';
-import { useTierState } from '../../hooks/useTierState';
-import type { Tier } from '../../types/content';
-import { chipClass, freqClass, freqLabel } from '../../utils/classes';
-import { getBlockById } from '../../utils/content';
-import { buildGrillPrompt } from '../../utils/grill';
-import { RichHtml } from './RichHtml';
-import { TierBlock } from './TierBlock';
+import {useEffect, useMemo, useState} from 'react';
+import {Link, useNavigate, useParams} from 'react-router-dom';
+import {ALL_BLOCKS} from '../../data/content';
+import {useProgress} from '../../hooks/useProgress';
+import {useTierState} from '../../hooks/useTierState';
+import {chipClass, freqClass, freqLabel} from '../../utils/classes';
+import {getBlockById} from '../../utils/content';
+import {buildGrillPrompt} from '../../utils/grill';
+import {TierBlock} from './TierBlock';
 
 const tierLabels = [
 	'Tier 1 — Beginner',
