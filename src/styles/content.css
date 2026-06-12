@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f1318;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a4d6a;
+  border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0f1318;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3a4d6a;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f7fb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c7d2e3;
+}
+
+.rich-html b {
+  color: inherit;
+  font-weight: 500;
+}
+
+.rich-html code {
+  border-radius: 3px;
+  background: rgba(31, 41, 55, 0.95);
+  padding: 1px 5px;
+  color: #2dd4bf;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+.dark .rich-html code {
+  background: #1b2230;
+}
+
+.rich-html li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.55;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.dark .rich-html li {
+  color: #8a97b0;
+}
+
+.rich-html li::before {
+  content: '→';
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #64748b;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+.dark .rich-html li::before {
+  color: #4a5872;
+}
