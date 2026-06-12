@@ -22,15 +22,10 @@ export function TierBlock({
 }: Readonly<TierBlockProps>) {
 	return (
 		<section
-			className={`tier-panel ${tierIndex === 0 ? 'tier-t1' : tierIndex === 1 ? 'tier-t2' : 'tier-t3'}`}>
-			<button type="button" onClick={onToggle} className="tier-header">
-				<div
-					style={{
-						display: 'flex',
-						alignItems: 'center',
-						gap: '0.75rem',
-					}}>
-					<span className="tier-label">{tierLabels[tierIndex]}</span>
+			className={`tier-panel ${tierIndex === 0 ? 'tier-t1' : tierIndex === 1 ? 'tier-t2' : 'tier-t3'} ${open ? 'open' : ''}`}>
+			<button type="button" onClick={onToggle} className="tier-hdr">
+				<div className="tier-left">
+					<span className="tier-badge">{tierLabels[tierIndex]}</span>
 				</div>
 				<div
 					style={{
