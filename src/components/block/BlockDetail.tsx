@@ -67,16 +67,7 @@ export function BlockDetail() {
 				<span className={`chip ${chipClass(block.chip)}`}>
 					{block.phase}
 				</span>
-				<span
-					style={{
-						fontFamily:
-							'JetBrains Mono, ui-monospace, SFMono-Regular, monospace',
-						fontSize: '0.625rem',
-						color: 'var(--color-text3)',
-					}}>
-					Block {String(block.id).padStart(2, '0')}
-				</span>
-				<span className={`tag ${freqClass(block.freq)}`}>
+			<span className={`tag ${freqClass(block.freq)}`}>
 					{freqLabel(block.freq)}
 				</span>
 			</div>

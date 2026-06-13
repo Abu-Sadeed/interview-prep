@@ -106,7 +106,7 @@ export const ALL_BLOCKS: Block[] = [
   ...arch,
   ...behavioral,
   ...testing,
-].sort((a, b) => a.id.localeCompare(b.id));
+];
 
 export const TOPIC_CONTENT: Record<string, Block[]> = {
   java,

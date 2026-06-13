@@ -18,15 +18,6 @@ export function BlockCard({block}: BlockCardProps) {
 				padding: '0.75rem 1rem',
 				color: 'inherit',
 			}}>
-			<span
-				style={{
-					fontFamily:
-						'JetBrains Mono, ui-monospace, SFMono-Regular, monospace',
-					fontSize: '0.625rem',
-					color: 'var(--color-text3)',
-				}}>
-				Block {String(block.id).padStart(2, '0')}
-			</span>
 			<div>
 				<div
 					style={{

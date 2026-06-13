@@ -106,7 +106,6 @@ function PhaseGroup({ phase, blocks, done, activePath }: { phase: string; blocks
             to={`/block/${block.id}`}
             className={`nav-link ${isActive ? 'nav-link-active' : ''} ${isDone ? 'nav-link-done' : ''}`}
           >
-            <span className="nav-link-id">{String(block.id).padStart(2, '0')}</span>
             <span className="nav-link-title">{block.title.split(' — ')[0]}</span>
             <span className={`nav-link-freq ${freqClass(block.freq)}`}>{block.freq.toUpperCase()}</span>
             <span className={`nav-link-dot ${isDone ? 'nav-link-dot-done' : isActive ? 'nav-link-dot-active' : 'nav-link-dot-idle'}`} />
