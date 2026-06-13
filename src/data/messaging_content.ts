@@ -213,6 +213,238 @@ export const messagingContent: Block[] = [
       }
     ],
     "grill": "You are a Senior Engineer interviewing a backend candidate.\n\nTOPIC: ActiveMQ + WebSocket (Block 27)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Design decisions, scaling challenges, production gotchas. 'Build real-time chat for 50K concurrent users', 'WebSocket connections drop after 60 seconds in production — diagnose it'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 78,
+    "phase": "Messaging & Events",
+    "chip": "messaging",
+    "freq": "high",
+    "title": "Kafka Operations + Schema Registry",
+    "subtitle": "KRaft, schema evolution, Avro/Protobuf, dead-letter topics, monitoring",
+    "prereqs": [
+      26
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "KRaft + Brokers",
+            "items": [
+              "<b>KRaft:</b> Kafka metadata stored in Kafka itself, no separate ZooKeeper ensemble.",
+              "<b>Controller quorum:</b> KRaft controllers manage metadata and broker membership.",
+              "<b>Broker roles:</b> leaders serve partition traffic; followers replicate logs.",
+              "<b>Operational benefit:</b> simpler deployment and fewer moving parts than ZooKeeper mode."
+            ]
+          },
+          {
+            "heading": "Schema Registry",
+            "items": [
+              "<b>Registry:</b> stores schema versions and ids. Producers/consumers fetch schemas by id.",
+              "<b>Avro/Protobuf:</b> compact binary formats with schema evolution support.",
+              "<b>Compatibility:</b> backward, forward, full, none. Choose based on producer/consumer rollout order.",
+              "<b>Subject:</b> usually topic-name-value or topic-name-key. Strategy must be consistent."
+            ]
+          }
+        ],
+        "traps": [
+          "KRaft removes ZooKeeper but not the need for quorum and backups",
+          "Schema compatibility mode must match deployment strategy",
+          "Consumers cannot decode messages without the correct schema version"
+        ],
+        "checkpoint": [
+          "Why did Kafka move to KRaft?",
+          "How does Schema Registry avoid sending full schemas with every message?",
+          "What compatibility mode allows old consumers to read new events?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "40 min",
+        "sections": [
+          {
+            "heading": "Schema Evolution",
+            "items": [
+              "<b>Additive changes:</b> add fields with defaults for backward compatibility.",
+              "<b>Renaming fields:</b> usually breaking. Prefer aliases or versioned event types.",
+              "<b>Deleting fields:</b> can break consumers. Deprecate first, then remove after rollout.",
+              "<b>Contract tests:</b> verify producers and consumers agree before deployment."
+            ]
+          },
+          {
+            "heading": "Dead-Letter Topics",
+            "items": [
+              "<b>DLT:</b> topic for messages that cannot be processed after retries.",
+              "<b>Envelope:</b> include original key/value, error, stack trace, retry count, and source topic.",
+              "<b>Replay:</b> fix consumer, then replay DLT selectively with controls.",
+              "<b>Monitoring:</b> alert on DLT growth and poison message patterns."
+            ]
+          }
+        ],
+        "traps": [
+          "Breaking schema changes require coordinated deployments",
+          "DLT without replay tooling becomes operational debt",
+          "Schema Registry outage can block producers if caching is insufficient"
+        ],
+        "checkpoint": [
+          "Design a backward-compatible event schema change.",
+          "What belongs in a Kafka dead-letter message?",
+          "How do you safely replay failed events?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Monitoring",
+            "items": [
+              "<b>Consumer lag:</b> track per consumer group and partition, not only cluster average.",
+              "<b>Under-replicated partitions:</b> early warning for broker or network issues.",
+              "<b>Request latency:</b> produce/fetch latency by broker and topic.",
+              "<b>Controller health:</b> active controller, quorum latency, metadata operation latency."
+            ]
+          },
+          {
+            "heading": "Operations",
+            "items": [
+              "<b>Partition reassignment:</b> move partitions deliberately with throttling.",
+              "<b>Retention policies:</b> balance replay window, storage cost, and compliance.",
+              "<b>Security:</b> ACLs per topic/group, TLS between clients and brokers, audit changes.",
+              "<b>Disaster recovery:</b> mirror maker, backup topics, and documented replay procedures."
+            ]
+          }
+        ],
+        "traps": [
+          "Average consumer lag hides one hot partition",
+          "Reassignment without throttling can destabilize the cluster",
+          "ACLs must cover both topic access and consumer group membership"
+        ],
+        "checkpoint": [
+          "Design Kafka monitoring for a critical payments topic.",
+          "How do you safely rebalance partitions?",
+          "What is your disaster recovery plan for Kafka?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Data Platform Engineer interviewing a candidate.\n\nTOPIC: Kafka Operations + Schema Registry (Block 78)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Kafka operations, schema evolution, DLTs, monitoring. 'Schema change broke consumers', 'DLT growing', 'KRaft migration plan'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 79,
+    "phase": "Messaging & Events",
+    "chip": "messaging",
+    "freq": "high",
+    "title": "Event-Driven Architecture Patterns",
+    "subtitle": "Outbox, saga, idempotency, consumer-driven contracts, retry design",
+    "prereqs": [
+      78
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Event Design",
+            "items": [
+              "<b>Event:</b> fact that happened. Use past tense: OrderPlaced, PaymentAuthorized.",
+              "<b>Command:</b> request to do something. Use imperative: PlaceOrder, AuthorizePayment.",
+              "<b>Envelope:</b> id, type, source, occurredAt, correlationId, causationId, schemaVersion, payload.",
+              "<b>Immutable events:</b> do not mutate published events. Publish new versioned events instead."
+            ]
+          },
+          {
+            "heading": "Outbox Pattern",
+            "items": [
+              "<b>Outbox table:</b> write domain change and event in the same DB transaction.",
+              "<b>Relay:</b> polls outbox and publishes to broker with idempotent publishing.",
+              "<b>Benefit:</b> avoids dual-write inconsistency between database and message broker.",
+              "<b>Failure:</b> relay retries until event is published and acknowledged."
+            ]
+          }
+        ],
+        "traps": [
+          "Publishing after DB commit is still a dual-write race",
+          "Events should describe facts, not internal implementation details",
+          "Outbox relay must be idempotent to avoid duplicate events"
+        ],
+        "checkpoint": [
+          "Difference between event and command?",
+          "How does outbox prevent dual-write problems?",
+          "What fields belong in an event envelope?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "40 min",
+        "sections": [
+          {
+            "heading": "Saga Pattern",
+            "items": [
+              "<b>Saga:</b> long-running transaction split into local transactions and events.",
+              "<b>Orchestration:</b> central coordinator tells participants what to do.",
+              "<b>Choreography:</b> services react to events without central coordinator.",
+              "<b>Compensation:</b> undo or mitigate previous steps when later step fails."
+            ]
+          },
+          {
+            "heading": "Idempotency + Contracts",
+            "items": [
+              "<b>Idempotency key:</b> deduplicate repeated commands or events by business key.",
+              "<b>Consumer-driven contracts:</b> consumers define expected events; providers verify compatibility.",
+              "<b>Retry policy:</b> exponential backoff, jitter, max attempts, DLT.",
+              "<b>Poison messages:</b> isolate malformed events before they block the queue."
+            ]
+          }
+        ],
+        "traps": [
+          "Choreography can become hard to trace as services grow",
+          "Compensation is not the same as rollback",
+          "Retrying without idempotency can duplicate side effects"
+        ],
+        "checkpoint": [
+          "Design an order fulfillment saga.",
+          "When choose orchestration vs choreography?",
+          "How do consumer-driven contracts prevent breaking changes?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Reliability Architecture",
+            "items": [
+              "<b>Exactly-once perception:</b> achieved with idempotent writes, dedup tables, and transactional outbox.",
+              "<b>Event versioning:</b> schemaVersion plus additive evolution and deprecation windows.",
+              "<b>Replay:</b> design consumers to be replayable from old events.",
+              "<b>Observability:</b> trace event flow across services with correlation and causation IDs."
+            ]
+          },
+          {
+            "heading": "Failure Modes",
+            "items": [
+              "<b>Partial failure:</b> some saga steps succeed, others fail. Compensation must handle partial state.",
+              "<b>Out-of-order delivery:</b> design consumers to ignore stale events or enforce per-key ordering.",
+              "<b>Schema drift:</b> detect incompatible schemas before production deploy.",
+              "<b>Backpressure:</b> slow consumers must not overwhelm producers or databases."
+            ]
+          }
+        ],
+        "traps": [
+          "Exactly-once is a system property, not a single broker setting",
+          "Out-of-order events break naive event-sourced projections",
+          "Replay requires consumers to be idempotent and side-effect safe"
+        ],
+        "checkpoint": [
+          "Design a replayable event-driven order system.",
+          "How do you handle out-of-order events?",
+          "What makes saga compensation correct?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Distributed Systems Engineer interviewing a candidate.\n\nTOPIC: Event-Driven Architecture Patterns (Block 79)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Outbox, saga, idempotency, contracts, retries. 'Dual-write bug', 'saga compensation failure', 'event schema breaks consumers'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
   }
 ];
 

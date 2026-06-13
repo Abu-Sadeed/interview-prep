@@ -567,8 +567,8 @@ export const databaseContent: Block[] = [
     "phase": "Database & Cache",
     "chip": "db",
     "freq": "med",
-    "title": "Cassandra — Distribution Model",
-    "subtitle": "Wide-column model, consistent hashing, replication, write path, compaction, anti-patterns",
+    "title": "Cassandra + ScyllaDB — Distribution Model",
+    "subtitle": "Cassandra and ScyllaDB wide-column model, consistent hashing, replication, write path, compaction, anti-patterns",
     "prereqs": [
       20
     ],
@@ -669,6 +669,354 @@ export const databaseContent: Block[] = [
       }
     ],
     "grill": "You are a Senior Engineer interviewing a Cassandra candidate.\n\nTOPIC: Cassandra Distribution Model (Block 25)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Data modeling scenarios + production operations + consistency level decisions. 'Design this for Cassandra', 'tombstones show 50K per query — diagnose it'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 75,
+    "phase": "Database & Cache",
+    "chip": "db",
+    "freq": "high",
+    "title": "Database Transactions + Isolation",
+    "subtitle": "ACID, isolation levels, locking, deadlocks, lost updates",
+    "prereqs": [
+      20
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "ACID",
+            "items": [
+              "<b>Atomicity:</b> transaction commits all changes or none. Partial failure rolls back.",
+              "<b>Consistency:</b> database moves from one valid state to another. Constraints enforce invariants.",
+              "<b>Isolation:</b> concurrent transactions do not corrupt each other's view.",
+              "<b>Durability:</b> committed data survives crashes after WAL/redo flush."
+            ]
+          },
+          {
+            "heading": "Lost Updates",
+            "items": [
+              "<b>Lost update:</b> two transactions read the same value, both modify, last write wins.",
+              "<b>Optimistic locking:</b> version column detects stale writes.",
+              "<b>Pessimistic locking:</b> SELECT FOR UPDATE prevents concurrent modification.",
+              "<b>Idempotency:</b> retry-safe operations reduce duplicate-write risk."
+            ]
+          }
+        ],
+        "traps": [
+          "ACID applies per database transaction, not across unrelated services",
+          "Long transactions increase lock duration and bloat",
+          "Retrying a non-idempotent write can duplicate side effects"
+        ],
+        "checkpoint": [
+          "Explain lost update with two concurrent balance updates.",
+          "When do you choose optimistic vs pessimistic locking?",
+          "What does durability require from the storage engine?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "40 min",
+        "sections": [
+          {
+            "heading": "Isolation Levels",
+            "items": [
+              "<b>Read Uncommitted:</b> dirty reads allowed. Rarely useful.",
+              "<b>Read Committed:</b> no dirty reads. Non-repeatable reads possible.",
+              "<b>Repeatable Read:</b> same rows stable in transaction. Phantom behavior depends on engine.",
+              "<b>Serializable:</b> strongest isolation. Lowest concurrency."
+            ]
+          },
+          {
+            "heading": "Locks + Deadlocks",
+            "items": [
+              "<b>Shared locks:</b> multiple readers. <b>Exclusive locks:</b> one writer.",
+              "<b>Deadlock:</b> T1 waits for T2 while T2 waits for T1. Database aborts one transaction.",
+              "<b>Prevention:</b> acquire locks in consistent order, keep transactions short, index lookup keys.",
+              "<b>Diagnosis:</b> lock wait graphs, slow query logs, transaction timing."
+            ]
+          }
+        ],
+        "traps": [
+          "Higher isolation is not free — it can reduce throughput",
+          "Deadlocks are normal under contention; design retries with backoff",
+          "Missing indexes turn row locks into broader lock contention"
+        ],
+        "checkpoint": [
+          "Compare READ COMMITTED and REPEATABLE READ.",
+          "How do you prevent deadlocks in a bank transfer flow?",
+          "What metrics reveal transaction lock contention?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Concurrency Control",
+            "items": [
+              "<b>MVCC:</b> readers see snapshots while writers create new row versions.",
+              "<b>Serializable snapshot isolation:</b> detects dangerous read/write patterns instead of blocking everything.",
+              "<b>Advisory locks:</b> application-level locks for business invariants not expressible as row locks.",
+              "<b>Outbox:</b> keep domain write and event publish in one transaction when cross-system consistency matters."
+            ]
+          },
+          {
+            "heading": "Distributed Limits",
+            "items": [
+              "<b>2PC:</b> coordinates multiple resources. Correct but blocking and operationally complex.",
+              "<b>Saga:</b> compensating transactions for long-running workflows.",
+              "<b>Idempotency keys:</b> make retries safe across network failures.",
+              "<b>Eventual consistency:</b> accept temporary divergence with reconciliation and observability."
+            ]
+          }
+        ],
+        "traps": [
+          "Distributed transactions hide availability problems until production",
+          "Advisory locks are only respected by code that uses them",
+          "Saga compensation must be idempotent and safe to retry"
+        ],
+        "checkpoint": [
+          "When is 2PC worth the operational cost?",
+          "Design a saga for order fulfillment.",
+          "How do you make retries safe across service boundaries?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Backend Engineer interviewing a candidate.\n\nTOPIC: Database Transactions + Isolation (Block 75)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Concurrency bugs, isolation trade-offs, locking, and distributed consistency. 'Lost update in checkout', 'deadlocks under load', 'choose isolation level'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 76,
+    "phase": "Database & Cache",
+    "chip": "db",
+    "freq": "med",
+    "title": "Cassandra + ScyllaDB Production",
+    "subtitle": "Scylla architecture, shard-aware drivers, compaction, tuning differences",
+    "prereqs": [
+      25
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "ScyllaDB Basics",
+            "items": [
+              "<b>ScyllaDB:</b> Cassandra-compatible NoSQL database written in C++ for lower latency and higher throughput.",
+              "<b>Shared-nothing architecture:</b> each CPU core owns memory, shards, and compaction work.",
+              "<b>Compatibility:</b> CQL, drivers, and data model map closely to Cassandra.",
+              "<b>Operational model:</b> still tune partitions, consistency levels, compaction, and repair."
+            ]
+          },
+          {
+            "heading": "Shard-Aware Drivers",
+            "items": [
+              "<b>Shard-aware driver:</b> sends requests directly to the shard owning the token range.",
+              "<b>Benefit:</b> avoids cross-shard forwarding and reduces CPU overhead.",
+              "<b>Connection pools:</b> maintain connections per shard when supported.",
+              "<b>Driver config:</b> match load balancing and consistency settings to cluster topology."
+            ]
+          }
+        ],
+        "traps": [
+          "Scylla is faster but does not remove bad partition design",
+          "Non-shard-aware drivers lose much of Scylla's performance advantage",
+          "Repair and compaction still matter in production"
+        ],
+        "checkpoint": [
+          "Why is ScyllaDB Cassandra-compatible but faster?",
+          "What does a shard-aware driver change?",
+          "How does bad partition design hurt Scylla?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Compaction Strategies",
+            "items": [
+              "<b>SizeTiered:</b> good write-heavy workloads, more read amplification.",
+              "<b>Leveled:</b> lower read amplification, more write amplification.",
+              "<b>TimeWindow:</b> good for time-series with TTL. Drops old windows efficiently.",
+              "<b>Tombstones:</b> monitor per-query tombstone scans and gc_grace_seconds."
+            ]
+          },
+          {
+            "heading": "Tuning",
+            "items": [
+              "<b>CPU pinning:</b> Scylla can pin shards to cores for predictable latency.",
+              "<b>Memory:</b> reserve memory for OS cache and avoid overcommit.",
+              "<b>Consistency:</b> LOCAL_QUORUM often preferred in multi-DC to avoid cross-DC latency.",
+              "<b>Driver retries:</b> tune idempotence awareness and retry policies."
+            ]
+          }
+        ],
+        "traps": [
+          "Leveled compaction can amplify writes on write-heavy tables",
+          "Over-tight memory limits starve OS page cache",
+          "QUORUM across distant datacenters increases latency and failure domains"
+        ],
+        "checkpoint": [
+          "Choose a compaction strategy for time-series telemetry.",
+          "How do tombstones affect read latency?",
+          "What tuning changes make Scylla different from Cassandra?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "25 min",
+        "sections": [
+          {
+            "heading": "Production Operations",
+            "items": [
+              "<b>Repair:</b> anti-entropy repair keeps replicas consistent. Automate and monitor.",
+              "<b>Backpressure:</b> monitor coordinator CPU, shard queue depth, and dropped mutations.",
+              "<b>Hot partitions:</b> shard imbalance causes one core to bottleneck the node.",
+              "<b>Upgrades:</b> test driver and protocol compatibility before rolling upgrades."
+            ]
+          },
+          {
+            "heading": "Failure Modes",
+            "items": [
+              "<b>Hinted handoff limits:</b> missed hints require repair after long outages.",
+              "<b>Consistency mismatch:</b> RF, CL, and DC topology must align with availability goals.",
+              "<b>Compaction backlog:</b> causes write stalls and high read amplification.",
+              "<b>Observability:</b> per-shard metrics are essential for Scylla debugging."
+            ]
+          }
+        ],
+        "traps": [
+          "Cluster-level metrics hide per-shard hot spots",
+          "Repair is not optional in multi-node deployments",
+          "Changing consistency levels without understanding RF can reduce guarantees"
+        ],
+        "checkpoint": [
+          "How do you detect a hot partition in Scylla?",
+          "What causes compaction backlog and how do you recover?",
+          "Design repair and monitoring for a multi-DC cluster."
+        ]
+      }
+    ],
+    "grill": "You are a Senior Database Engineer interviewing a candidate.\n\nTOPIC: Cassandra + ScyllaDB Production (Block 76)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Scylla architecture, compaction, shard-aware drivers, production tuning. 'One shard is hot', 'tombstones slow reads', 'choose compaction strategy'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 77,
+    "phase": "Database & Cache",
+    "chip": "db",
+    "freq": "med",
+    "title": "Elasticsearch Query Design",
+    "subtitle": "Relevance tuning, analyzers, synonyms, filtering, aggregations",
+    "prereqs": [
+      24
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Mapping for Search",
+            "items": [
+              "<b>text vs keyword:</b> text for full-text search, keyword for exact match, sorting, and aggregations.",
+              "<b>Multi-fields:</b> name.text for search and name.keyword for sort/agg.",
+              "<b>Dynamic mapping:</b> convenient but dangerous at scale. Define mappings explicitly for production indices.",
+              "<b>Nested objects:</b> use nested type when arrays of objects must be queried independently."
+            ]
+          },
+          {
+            "heading": "Query Structure",
+            "items": [
+              "<b>match:</b> analyzed full-text query. <b>term:</b> exact keyword query.",
+              "<b>bool query:</b> must/should/filter/must_not combine clauses.",
+              "<b>filter context:</b> cached yes/no conditions, no scoring.",
+              "<b>sort:</b> sort on keyword/numeric/date fields, not analyzed text."
+            ]
+          }
+        ],
+        "traps": [
+          "Aggregating on text fields requires fielddata and can cause OOM",
+          "Dynamic mapping can create mapping explosion",
+          "Scoring queries and filters have different performance characteristics"
+        ],
+        "checkpoint": [
+          "Design mapping for product title, category, price, and tags.",
+          "When do you use match vs term?",
+          "Why put category in filter context?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Relevance",
+            "items": [
+              "<b>BM25:</b> term frequency, inverse document frequency, and field length normalization.",
+              "<b>Boosting:</b> boost title over description, exact phrase over token match.",
+              "<b>Function score:</b> combine relevance with business signals like popularity or freshness.",
+              "<b>Explain API:</b> inspect why a document matched and scored."
+            ]
+          },
+          {
+            "heading": "Analyzers + Synonyms",
+            "items": [
+              "<b>Analyzer pipeline:</b> character filters, tokenizer, token filters.",
+              "<b>Custom analyzers:</b> lowercase, stem, synonym, shingle filters based on search behavior.",
+              "<b>Synonyms:</b> expand or equivalent synonyms. Test before deploying.",
+              "<b>Index-time vs search-time:</b> index-time synonyms affect indexing; search-time synonyms are more flexible."
+            ]
+          }
+        ],
+        "traps": [
+          "Synonym changes often require reindexing depending on analyzer design",
+          "Over-boosting can make irrelevant documents rank first",
+          "Function score without guardrails can hide poor text relevance"
+        ],
+        "checkpoint": [
+          "Tune search so title matches outrank description matches.",
+          "How do you test synonym quality?",
+          "Explain BM25 in practical terms."
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Aggregations",
+            "items": [
+              "<b>Terms aggregation:</b> top categories, facets, buckets. Limit shard_size and size.",
+              "<b>Nested aggregations:</b> combine filters, date histograms, metrics, and sub-buckets.",
+              "<b>Composite aggregation:</b> paginate large aggregation results safely.",
+              "<b>Cardinality:</b> approximate unique counts with HLL. Not exact."
+            ]
+          },
+          {
+            "heading": "Production Query Design",
+            "items": [
+              "<b>Request cache:</b> helps repeated filter-heavy searches, not highly variable text queries.",
+              "<b>Search after:</b> deep pagination without from/size cost.",
+              "<b>Point-in-time:</b> consistent view for scroll-like workflows.",
+              "<b>A/B relevance:</b> measure click-through, conversion, and zero-result rate."
+            ]
+          }
+        ],
+        "traps": [
+          "Large aggregations can exhaust heap",
+          "from/size deep pagination scans many documents",
+          "Relevance tuning without product metrics is guesswork"
+        ],
+        "checkpoint": [
+          "Design faceted search with category, price range, and sort.",
+          "How do you paginate 1 million aggregation buckets?",
+          "What metrics prove search relevance improved?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Search Engineer interviewing a candidate.\n\nTOPIC: Elasticsearch Query Design (Block 77)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Search relevance, mapping, analyzers, aggregations. 'Products don't rank correctly', 'facet aggregation OOM', 'design synonym strategy'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
   }
 ];
 

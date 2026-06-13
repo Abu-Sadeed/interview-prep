@@ -31,17 +31,21 @@ type TopicOption = { key: TopicKey; label: string; phase: string; chip: string }
 const topicOptions: TopicOption[] = [
   { key: 'java', label: 'Java Fundamentals', phase: 'Java Fundamentals', chip: 'java' },
   { key: 'spring', label: 'Spring Ecosystem', phase: 'Spring Ecosystem', chip: 'spring' },
+  { key: 'springboot', label: 'Spring Boot', phase: 'Spring Boot', chip: 'springboot' },
+  { key: 'javascript', label: 'JavaScript', phase: 'JavaScript', chip: 'javascript' },
   { key: 'jsbackend', label: 'JS Backend', phase: 'JS Backend', chip: 'nestjs' },
   { key: 'database', label: 'Database & Cache', phase: 'Database & Cache', chip: 'db' },
   { key: 'messaging', label: 'Messaging & Events', phase: 'Messaging & Events', chip: 'messaging' },
   { key: 'api', label: 'API + HTTP + Security', phase: 'API + HTTP + Security', chip: 'api' },
   { key: 'infra', label: 'Infrastructure & Tooling', phase: 'Infrastructure & Tooling', chip: 'infra' },
   { key: 'frontend', label: 'Frontend', phase: 'Frontend', chip: 'frontend' },
+  { key: 'html', label: 'HTML + Web Semantics', phase: 'Frontend', chip: 'html' },
   { key: 'arch', label: 'Architecture & Design', phase: 'Architecture & Design', chip: 'arch' },
   { key: 'behavioral', label: 'Behavioral & Career', phase: 'Behavioral & Career', chip: 'arch' },
-  { key: 'testing', label: 'Testing', phase: 'Cross-Cutting', chip: 'arch' },
+  { key: 'testing', label: 'Testing', phase: 'Cross-Cutting', chip: 'testing' },
   { key: 'devops', label: 'DevOps', phase: 'DevOps', chip: 'infra' },
-  { key: 'typescript', label: 'TypeScript', phase: 'JS Backend', chip: 'ts' },
+  { key: 'cloud', label: 'Cloud', phase: 'Cloud', chip: 'aws' },
+  { key: 'typescript', label: 'TypeScript', phase: 'JavaScript', chip: 'ts' },
 ];
 
 const chipOptions = Array.from(new Set(ALL_BLOCKS.map((block) => block.chip))).sort();

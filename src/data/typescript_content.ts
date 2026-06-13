@@ -9,7 +9,7 @@ export const typescriptContent: Block[] = [
     "title": "TypeScript — Advanced Type System",
     "subtitle": "Conditional types, mapped types, generic constraints, type inference, utility types, branding",
     "prereqs": [
-      34
+      65
     ],
     "tiers": [
       {
@@ -119,6 +119,122 @@ export const typescriptContent: Block[] = [
       }
     ],
     "grill": "You are a Senior TypeScript Engineer interviewing a candidate.\n\nTOPIC: TypeScript Advanced Type System (Block 64)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Type system puzzles, conditional type challenges, branding patterns. 'Design a type-safe builder', 'why won't this type constraint work', 'branding for safety'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 87,
+    "phase": "JavaScript",
+    "chip": "ts",
+    "freq": "high",
+    "title": "TypeScript Practical Usage",
+    "subtitle": "Interfaces vs types, narrowing, generics basics, API response typing, React props",
+    "prereqs": [
+      65
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Types + Interfaces",
+            "items": [
+              "<b>type:</b> aliases for primitives, unions, intersections, tuples, and object shapes.",
+              "<b>interface:</b> named object shape. Can be extended and merged by declaration merging.",
+              "<b>Prefer type for unions:</b> type UserState = Idle | Loading | Success | Error.",
+              "<b>Structural typing:</b> compatibility comes from shape, not nominal class name."
+            ]
+          },
+          {
+            "heading": "Narrowing",
+            "items": [
+              "<b>typeof:</b> narrow string, number, boolean, bigint, symbol, object, function.",
+              "<b>in:</b> check property existence before accessing it.",
+              "<b>instanceof:</b> narrow class instances at runtime.",
+              "<b>Type predicates:</b> function isUser(value: unknown): value is User."
+            ]
+          }
+        ],
+        "traps": [
+          "interface and type are often interchangeable for object shapes",
+          "any disables type checking and should be avoided",
+          "Narrowing after async boundaries usually requires runtime validation"
+        ],
+        "checkpoint": [
+          "When choose interface vs type?",
+          "How do you narrow a union of API response states?",
+          "Why is any dangerous?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Generics Basics",
+            "items": [
+              "<b>Generic function:</b> function identity<T>(value: T): T { return value; }.",
+              "<b>Constraints:</b> <T extends { id: string }> limits accepted types.",
+              "<b>Utility types:</b> Partial, Pick, Omit, Record, Readonly, ReturnType.",
+              "<b>Inference:</b> let TypeScript infer when explicit annotations add noise."
+            ]
+          },
+          {
+            "heading": "API Responses",
+            "items": [
+              "<b>Runtime validation:</b> use Zod or similar to validate external data, then narrow to TypeScript types.",
+              "<b>z.infer:</b> derive static type from runtime schema to avoid duplication.",
+              "<b>Error unions:</b> type success and failure responses explicitly.",
+              "<b>Serialization:</b> TypeScript types do not validate JSON from the network."
+            ]
+          }
+        ],
+        "traps": [
+          "Generics are for relationships between inputs/outputs, not just any reusable function",
+          "Type inference from API responses is unsafe without runtime validation",
+          "Over-constraining generics makes them hard to reuse"
+        ],
+        "checkpoint": [
+          "Write a generic map function.",
+          "How do you type and validate an API response?",
+          "When should you avoid explicit generic annotations?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "React Props",
+            "items": [
+              "<b>Props type:</b> function Button(props: ButtonProps) or function Button({ variant }: ButtonProps).",
+              "<b>children:</b> type explicitly when needed; React 18 no longer requires React.FC for children.",
+              "<b>Polymorphic components:</b> as prop with component generics when API truly needs it.",
+              "<b>Event types:</b> React.ChangeEvent<HTMLInputElement>, React.FormEvent<HTMLFormElement>."
+            ]
+          },
+          {
+            "heading": "Advanced Patterns",
+            "items": [
+              "<b>Branding:</b> type Email = string & { readonly brand: unique symbol } for nominal safety.",
+              "<b>Template literals:</b> type Route = `/users/${string}` for constrained strings.",
+              "<b>Conditional types:</b> Extract, Exclude, and custom conditional mappings.",
+              "<b>tsconfig:</b> strict, noUncheckedIndexedAccess, exactOptionalPropertyTypes improve safety."
+            ]
+          }
+        ],
+        "traps": [
+          "Polymorphic components can make prop types hard to maintain",
+          "Branding is compile-time only; validate runtime data separately",
+          "Strict tsconfig options reveal real bugs but may require migration"
+        ],
+        "checkpoint": [
+          "Type a reusable Button component.",
+          "How do you brand an Email type?",
+          "Which tsconfig strict options improve safety most?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior TypeScript Engineer interviewing a candidate.\n\nTOPIC: TypeScript Practical Usage (Block 87)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Practical TS usage, narrowing, generics, API validation, React props. 'Type this API response', 'interface vs type', 'generic constraints'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
   }
 ];
 

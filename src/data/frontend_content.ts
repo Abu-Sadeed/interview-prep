@@ -170,8 +170,8 @@ export const frontendContent: Block[] = [
     "phase": "Frontend",
     "chip": "frontend",
     "freq": "med",
-    "title": "React State Management Patterns",
-    "subtitle": "Redux patterns, Context + useReducer, Zustand, Jotai, React Query",
+    "title": "React State Management — Redux Toolkit + External Stores",
+    "subtitle": "Redux Toolkit, middleware, selectors, and external state stores",
     "prereqs": [
       33
     ],
@@ -219,7 +219,7 @@ export const frontendContent: Block[] = [
             "heading": "Modern Alternatives",
             "items": [
               "<b>Zustand:</b> minimal boilerplate, hook-based API. No middleware needed. Good for simple state.",
-              "<b>Jotai:</arg_key> atoms are minimal state units. Composable, TypeScript-friendly. No provider wrapper.",
+              "<b>Jotai:</b> atoms are minimal state units. Composable, TypeScript-friendly. No provider wrapper.",
               "<b>React Query:</b> server state management. Caching, background refetch, pagination. Not for UI state.",
               "<b>Recoil:</b> atomic state, selector-based derived state. Facebook-backed but beta."
             ]
@@ -461,7 +461,7 @@ export const frontendContent: Block[] = [
     "chip": "frontend",
     "freq": "high",
     "title": "React — State Management",
-    "subtitle": "useState vs useReducer, Context, Redux Toolkit, Zustand, React Query — when each wins",
+    "subtitle": "Local state, global state, server state, and when each pattern wins",
     "prereqs": [
       35
     ],
@@ -826,8 +826,8 @@ export const frontendContent: Block[] = [
               "<b>Data fetching hook:</b> useEffect with abort controller. Cleanup on unmount. Stale response prevention.",
               "<b>Subscription hook:</b> Encapsulate event emitter logic. Return latest value. Cleanup on unmount. useEffectEvent alternative.",
               "<b>State reducer pattern:</b> expose dispatch(action) for state changes. Allow caller to override reducer for control.",
-              "<b>Props getter pattern:</arg_key> Hook returns props to spread onto elements. Abstract complex event handlers. useMediaQuery example.",
-              "<b>Factory hook pattern:</arg_key> Hook that generates other hooks. Create reusable async hook factories with default config."
+              "<b>Props getter pattern:</b> Hook returns props to spread onto elements. Abstract complex event handlers. useMediaQuery example.",
+              "<b>Factory hook pattern:</b> Hook that generates other hooks. Create reusable async hook factories with default config."
             ]
           },
           {
@@ -835,9 +835,9 @@ export const frontendContent: Block[] = [
             "items": [
               "<b>Bundle splitting:</b> lazy() + Suspense for route-level. Loadable components for component-level. Prefetch on hover.",
               "<b>Virtual list:</b> react-window for large lists. Only render visible + buffer items. Variable item heights = complex.",
-              "<b>Context splitting:</arg_key> Multiple contexts vs single context. Frequent changes = own context to prevent re-renders.",
-              "<b>Memo pitfalls:</arg_key> useMemo for expensive calculations only. useCallback for stable function identity. Over-memoizing = worse performance.",
-              "<b>Rerender debugging:</arg_key> why-did-you-render in dev. Identify unnecessary re-renders. Profiler for performance bottlenecks."
+              "<b>Context splitting:</b> Multiple contexts vs single context. Frequent changes = own context to prevent re-renders.",
+              "<b>Memo pitfalls:</b> useMemo for expensive calculations only. useCallback for stable function identity. Over-memoizing = worse performance.",
+              "<b>Rerender debugging:</b> why-did-you-render in dev. Identify unnecessary re-renders. Profiler for performance bottlenecks."
             ]
           }
         ],
@@ -860,10 +860,10 @@ export const frontendContent: Block[] = [
             "heading": "Concurrent React Patterns",
             "items": [
               "<b>useTransition:</b> mark state update as non-urgent. Urgent = typing, click. Non-urgent = tab switch, list filter.",
-              "<b>useDeferredValue:</arg_key> defer re-render of non-critical parts. Slow list filter while typing stays responsive.",
-              "<b>startTransition:</arg_key> programmatic transition. Wrap non-urgent updates. Does NOT work for DOM updates inside.",
-              "<b>Suspense for data:</arg_key> throw promise in render. React caches resolved value. Error boundaries work here too.",
-              "<b>Concurrent mode gotchas:</arg_key> Effects run twice in dev = breaking bugs. Cleanup + re-run. Not production bug."
+              "<b>useDeferredValue:</b> defer re-render of non-critical parts. Slow list filter while typing stays responsive.",
+              "<b>startTransition:</b> programmatic transition. Wrap non-urgent updates. Does NOT work for DOM updates inside.",
+              "<b>Suspense for data:</b> throw promise in render. React caches resolved value. Error boundaries work here too.",
+              "<b>Concurrent mode gotchas:</b> Effects run twice in dev = breaking bugs. Cleanup + re-run. Not production bug."
             ]
           },
           {
@@ -889,6 +889,574 @@ export const frontendContent: Block[] = [
       }
     ],
     "grill": "You are a Senior Frontend Engineer interviewing a candidate.\n\nTOPIC: Advanced React Patterns (Block 63)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Pattern recognition, refactoring suggestions, performance diagnosis. 'This component re-renders too often — fix it', 'implement this compound component', 'concurrent mode debugging'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+{
+  "id": 59,
+  "phase": "Frontend",
+  "chip": "frontend",
+  "freq": "med",
+  "title": "System Design — Frontend Architecture",
+  "subtitle": "Micro-frontends, design systems, performance budgets, SSR vs CSR trade-offs, monorepo structure",
+  "prereqs": [
+    35,
+    48
+  ],
+  "tiers": [
+    {
+      "level": "Beginner",
+      "time": "30 min",
+      "sections": [
+        {
+          "heading": "Frontend Architecture Patterns",
+          "items": [
+            "<b>Monolithic frontend:</b> one app, one deployment. Simple. Fine for most applications.",
+            "<b>Micro-frontends:</b> independently deployed frontend modules. Each team owns their section. Compose at runtime (Module Federation) or build time.",
+            "<b>When micro-frontends:</b> multiple teams working on same frontend, different deployment cadences needed, different tech stacks. Not for small apps.",
+            "<b>Design system:</b> shared component library + design tokens + documentation. Single source of visual truth. Storybook for development + documentation.",
+            "<b>Monorepo:</b> all frontend packages in one repo. Shared code easy. Turborepo/Nx for build caching and task orchestration."
+          ]
+        }
+      ],
+      "traps": [
+        "Micro-frontends add complexity — don't adopt without clear multi-team problem to solve",
+        "Design system without governance = diverges from production UI over time — need dedicated ownership",
+        "Monorepo without build caching = CI time grows with every added package — always add Turborepo/Nx"
+      ],
+      "checkpoint": [
+        "When would you choose micro-frontends over a monolithic frontend?",
+        "What is a design system and how is it different from a component library?",
+        "What problem does Turborepo solve in a monorepo?"
+      ]
+    },
+    {
+      "level": "Intermediate",
+      "time": "40 min",
+      "sections": [
+        {
+          "heading": "Rendering Strategy at Scale",
+          "items": [
+            "<b>CSR (Client-Side Rendering):</b> empty HTML, JS fetches data, renders. Slow initial load, fast navigation. Poor SEO without SSR.",
+            "<b>SSR (Server-Side Rendering):</b> HTML from server per request. Good SEO, fast initial paint. Server load, complex caching.",
+            "<b>SSG (Static Generation):</b> HTML at build time. CDN-served. Fastest. Not for dynamic per-user content.",
+            "<b>Islands Architecture:</b> mostly static HTML, small interactive islands hydrated independently. Astro. Best performance, SEO + interactivity.",
+            "<b>Decision framework:</b> public marketing content → SSG. User-specific dashboard → CSR. Mixed content + SEO → Next.js SSR/ISR."
+          ]
+        },
+        {
+          "heading": "Performance Architecture",
+          "items": [
+            "<b>Performance budget:</b> set limits on JS bundle size, LCP, CLS, INP before development. Fail CI when exceeded. Prevents gradual bloat.",
+            "<b>Critical CSS:</b> inline CSS for above-the-fold content. Eliminate render-blocking external stylesheets for first paint.",
+            "<b>Font loading strategy:</b> font-display: swap (show fallback immediately). Preload critical fonts. Subset fonts (only include used characters).",
+            "<b>Image optimization:</b> WebP/AVIF formats. Next.js next/image for automatic optimisation. Responsive images with srcset."
+          ]
+        }
+      ],
+      "traps": [
+        "SSR without caching = every request hits the server = expensive and slow. Cache SSR output at CDN or in-process.",
+        "Inlining too much CSS defeats the point — only critical above-the-fold CSS. Lazy load the rest.",
+        "Font flash of invisible text (FOIT) vs flash of unstyled text (FOUT) — font-display: swap causes FOUT which is usually preferable"
+      ],
+      "checkpoint": [
+        "I have a SaaS dashboard with user-specific data and a public marketing site. Which rendering strategy for each and why?",
+        "What is the Islands Architecture and when does it make sense over Next.js?",
+        "How do you prevent JavaScript bundle size from growing over time?"
+      ]
+    },
+    {
+      "level": "Advanced",
+      "time": "30 min",
+      "sections": [
+        {
+          "heading": "Advanced Frontend System Design",
+          "items": [
+            "<b>State sync at scale:</b> multiple browser tabs sharing state. BroadcastChannel API for cross-tab messaging. SharedWorker for shared computation.",
+            "<b>Offline-first (PWA):</b> Service Worker caches assets and API responses. Background sync for offline actions. Works without network.",
+            "<b>Feature flags at frontend:</b> server-driven flags (fetch on load), SDK-based (LaunchDarkly), edge-based (Vercel Edge Config). Separate deploy from release.",
+            "<b>A/B testing architecture:</b> variant assignment at edge (no flash). Analytics event tracking. Statistical significance before declaring winner.",
+            "<b>Web security for frontends:</b> CSP headers, Subresource Integrity (SRI) for CDN scripts, iframe sandboxing, postMessage origin validation."
+          ]
+        }
+      ],
+      "traps": [
+        "Service Worker update not propagating — users stuck on old version. Use skipWaiting() + clients.claim() with care.",
+        "Feature flags evaluated on client = user can see which features are hidden. Server-side evaluation for sensitive features.",
+        "postMessage without origin validation = cross-origin script injection. Always validate event.origin."
+      ],
+      "checkpoint": [
+        "How do you implement a PWA that works completely offline?",
+        "Design a feature flag system for a React frontend. What are the options and trade-offs?",
+        "What is Subresource Integrity (SRI) and when do you use it?"
+      ]
+    }
+  ],
+  "grill": "You are a Senior Frontend/Fullstack Engineer interviewing a candidate on frontend architecture.\n\nTOPIC: Frontend System Design (Block 59)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Design scenarios ('design the frontend architecture for a large SaaS product with 5 teams'), trade-off probes ('why SSR here and not SSG'), and performance design ('how do you ensure this stays fast as the team grows').\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 71,
+    "phase": "Frontend",
+    "chip": "frontend",
+    "freq": "high",
+    "title": "React Performance Internals",
+    "subtitle": "Rendering lifecycle, reconciliation, memoization pitfalls, profiler workflow",
+    "prereqs": [
+      33,
+      45
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Render Lifecycle",
+            "items": [
+              "<b>Render:</b> React calls component functions/classes to produce a React element tree.",
+              "<b>Commit:</b> React applies DOM mutations, layout effects, and passive effects.",
+              "<b>Re-render causes:</b> state update, parent re-render, context change, forced update.",
+              "<b>Strict Mode:</b> intentionally double-invokes some functions in development to find impure renders."
+            ]
+          },
+          {
+            "heading": "Reconciliation",
+            "items": [
+              "<b>Diffing:</b> React compares element trees by type and key.",
+              "<b>Keys:</b> stable keys preserve component state across list reorder. Index keys are risky for sorted/filtered lists.",
+              "<b>Component type:</b> changing type remounts subtree. Same type updates existing instance.",
+              "<b>Render ≠ DOM update:</b> React may render but skip DOM mutations when output is unchanged."
+            ]
+          }
+        ],
+        "traps": [
+          "React.memo only skips re-render when props are shallowly equal",
+          "Using array index as key can reset state when list order changes",
+          "Console logs during render can mislead because Strict Mode double-invokes"
+        ],
+        "checkpoint": [
+          "Why did a child render when only unrelated parent state changed?",
+          "When is an index key unsafe?",
+          "What is the difference between render and commit?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "40 min",
+        "sections": [
+          {
+            "heading": "Memoization",
+            "items": [
+              "<b>React.memo:</b> shallow prop comparison for component render skipping.",
+              "<b>useMemo:</b> memoize expensive calculations or stable object values.",
+              "<b>useCallback:</b> stabilize function identity for child props or dependency arrays.",
+              "<b>Cost:</b> memoization has memory and comparison overhead. Use when it solves measured problems."
+            ]
+          },
+          {
+            "heading": "Profiler Workflow",
+            "items": [
+              "<b>React DevTools Profiler:</b> record interactions, inspect why components rendered.",
+              "<b>Flamegraph:</b> find long renders and frequent re-renders.",
+              "<b>Histogram:</b> compare builds or interactions.",
+              "<b>Fix loop:</b> measure → identify cause → change state shape/memoization → measure again."
+            ]
+          }
+        ],
+        "traps": [
+          "Memoizing everything can make performance worse",
+          "Profiling in development can exaggerate costs",
+          "useMemo without dependencies recalculates every render"
+        ],
+        "checkpoint": [
+          "Use Profiler to find why a list item re-renders.",
+          "When should you avoid React.memo?",
+          "How does state shape affect re-render cost?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Advanced Rendering",
+            "items": [
+              "<b>Concurrent rendering:</b> React can interrupt and resume rendering for urgent updates.",
+              "<b>Transitions:</b> mark non-urgent updates with startTransition/useTransition.",
+              "<b>useDeferredValue:</b> keep input responsive while deferring expensive derived UI.",
+              "<b>Suspense:</b> show fallback while suspended content becomes ready."
+            ]
+          },
+          {
+            "heading": "Large Lists",
+            "items": [
+              "<b>Virtualization:</b> render only visible rows plus overscan.",
+              "<b>Stable row height:</b> simplifies virtualization. Variable height needs measurement.",
+              "<b>Data normalization:</b> store entities by id to avoid duplicating large objects.",
+              "<b>Selector granularity:</b> subscribe components only to the slice they need."
+            ]
+          }
+        ],
+        "traps": [
+          "Transitions do not make the underlying work free",
+          "Virtualization complicates focus management and layout measurement",
+          "Concurrent rendering requires avoiding unsafe global side effects"
+        ],
+        "checkpoint": [
+          "Make a filter input stay responsive while filtering 100K rows.",
+          "How do transitions improve perceived performance?",
+          "What virtualization issues appear with variable row heights?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Frontend Engineer interviewing a candidate.\n\nTOPIC: React Performance Internals (Block 71)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Re-render debugging, reconciliation, memoization, profiler workflow. 'This list renders too often', 'memoization made it slower', 'profile this interaction'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 72,
+    "phase": "Frontend",
+    "chip": "frontend",
+    "freq": "med",
+    "title": "React Router + App Structure",
+    "subtitle": "Route layout, loaders/actions, protected routes, code splitting by route",
+    "prereqs": [
+      33,
+      34
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Routing Model",
+            "items": [
+              "<b>Route tree:</b> routes map URL segments to components and layouts.",
+              "<b>Layout routes:</b> shared UI around child routes. Avoid duplicating nav/sidebar.",
+              "<b>Index routes:</b> render at the parent path without an additional segment.",
+              "<b>Nested routes:</b> enable partial page updates and persistent layouts."
+            ]
+          },
+          {
+            "heading": "Navigation",
+            "items": [
+              "<b>Link:</b> client-side navigation without full reload.",
+              "<b>useNavigate:</b> imperative navigation after mutations.",
+              "<b>Search params:</b> encode filters, pagination, and sort state in URL.",
+              "<b>Active links:</b> derive from current location for navigation state."
+            ]
+          }
+        ],
+        "traps": [
+          "Putting all state in React state loses deep-linkable URLs",
+          "Nested routes without layouts duplicate shell UI",
+          "Redirect loops often come from auth checks that depend on loading state"
+        ],
+        "checkpoint": [
+          "Design route layout for dashboard, settings, and profile pages.",
+          "Where should filter state live for shareable URLs?",
+          "What causes an auth redirect loop?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Loaders + Actions",
+            "items": [
+              "<b>Loader:</b> fetch data before route renders. Enables pending UI and error boundaries.",
+              "<b>Action:</b> handle form submissions and mutations in route context.",
+              "<b>Revalidation:</b> loaders rerun after actions to keep UI consistent.",
+              "<b>Pending state:</b> show optimistic or loading UI while navigation/mutation is in progress."
+            ]
+          },
+          {
+            "heading": "Protected Routes",
+            "items": [
+              "<b>Auth wrapper:</b> check session, redirect or render login.",
+              "<b>Role checks:</b> authorize after authentication, not instead of it.",
+              "<b>Loading states:</b> do not redirect before auth state is known.",
+              "<b>ReturnTo:</b> preserve requested URL and navigate back after login."
+            ]
+          }
+        ],
+        "traps": [
+          "Client-side route protection is UX, not security. Server must enforce authorization.",
+          "Actions without validation create inconsistent UI state",
+          "Revalidation after every mutation can be expensive if not scoped"
+        ],
+        "checkpoint": [
+          "Implement a protected admin route with loading state.",
+          "How do loaders/actions improve form flows?",
+          "What must the server still enforce for protected routes?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Code Splitting",
+            "items": [
+              "<b>Route-level lazy:</b> lazy load route components by URL segment.",
+              "<b>Prefetch:</b> load likely next routes on hover or idle time.",
+              "<b>Bundle analysis:</b> identify large route chunks and shared dependencies.",
+              "<b>Error boundaries:</b> isolate failures to route chunks."
+            ]
+          },
+          {
+            "heading": "App Architecture",
+            "items": [
+              "<b>Feature folders:</b> colocate routes, components, loaders, tests, and styles.",
+              "<b>Shared shell:</b> auth, layout, navigation, and feature flags at root.",
+              "<b>Error handling:</b> route-level error boundaries with retry actions.",
+              "<b>Analytics:</b> track route changes without duplicating navigation logic."
+            ]
+          }
+        ],
+        "traps": [
+          "Too many tiny chunks create request waterfalls",
+          "Lazy boundaries without error boundaries hide chunk load failures",
+          "Feature folders still need clear public APIs to avoid tight coupling"
+        ],
+        "checkpoint": [
+          "Design route code splitting for a large admin app.",
+          "How do you avoid bundle waterfalls?",
+          "Where do route-level errors belong?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Frontend Engineer interviewing a candidate.\n\nTOPIC: React Router + App Structure (Block 72)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Route layout, loaders/actions, auth, code splitting. 'Design dashboard routing', 'auth redirect loop', 'split bundles by route'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 73,
+    "phase": "Frontend",
+    "chip": "frontend",
+    "freq": "med",
+    "title": "CSS Architecture + Design Tokens",
+    "subtitle": "BEM, utility-first CSS, tokens, responsive systems, dark mode",
+    "prereqs": [
+      44
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Methodologies",
+            "items": [
+              "<b>BEM:</b> block__element--modifier naming. Predictable specificity and reusable blocks.",
+              "<b>Utility-first:</b> compose small classes like flex, p-4, text-sm. Fast iteration, verbose markup.",
+              "<b>CSS modules:</b> local class scoping at build time. Prevents global collisions.",
+              "<b>CSS-in-JS:</b> colocate styles with components. Watch runtime cost and SSR setup."
+            ]
+          },
+          {
+            "heading": "Specificity",
+            "items": [
+              "<b>Specificity order:</b> inline > ID > class/attribute/pseudo-class > element.",
+              "<b>Low specificity:</b> easier overrides and fewer !important rules.",
+              "<b>Cascade layers:</b> @layer controls precedence between style sources.",
+              "<b>Design rule:</b> prefer composition over fighting specificity."
+            ]
+          }
+        ],
+        "traps": [
+          "!important makes future overrides painful",
+          "Utility classes can obscure component intent if overused",
+          "CSS-in-JS runtime styles can hurt performance if unmanaged"
+        ],
+        "checkpoint": [
+          "Compare BEM and utility-first CSS.",
+          "How do cascade layers help large apps?",
+          "Why avoid high specificity?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Design Tokens",
+            "items": [
+              "<b>Tokens:</b> named values for color, spacing, typography, radius, shadow, motion.",
+              "<b>Semantic tokens:</b> color.success, color.danger, color.background instead of raw hex names.",
+              "<b>Platforms:</b> share tokens across web, iOS, Android, and design tools.",
+              "<b>Theming:</b> swap token values for dark mode, brand, or customer themes."
+            ]
+          },
+          {
+            "heading": "Responsive Systems",
+            "items": [
+              "<b>Mobile-first:</b> base styles for small screens, add breakpoints for larger screens.",
+              "<b>Fluid typography:</b> clamp(min, preferred, max) scales smoothly.",
+              "<b>Container queries:</b> component responds to container size, not viewport.",
+              "<b>Spacing scale:</b> 4px/8px grid improves consistency."
+            ]
+          }
+        ],
+        "traps": [
+          "Tokens without governance become another design system silo",
+          "Dark mode is more than inverting colors — check contrast and images",
+          "Too many breakpoints create maintenance burden"
+        ],
+        "checkpoint": [
+          "Design semantic color tokens for light/dark mode.",
+          "When use container queries over media queries?",
+          "How do tokens connect design and code?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "25 min",
+        "sections": [
+          {
+            "heading": "Scalable CSS",
+            "items": [
+              "<b>Component APIs:</b> expose layout/variant/size props instead of arbitrary overrides.",
+              "<b>Token pipeline:</b> generate CSS variables from source tokens and validate them in CI.",
+              "<b>Regression testing:</b> visual regression catches layout and token mistakes.",
+              "<b>Performance:</b> ship only used CSS, avoid large runtime style generation."
+            ]
+          },
+          {
+            "heading": "Governance",
+            "items": [
+              "<b>Ownership:</b> define who can add tokens, components, and global styles.",
+              "<b>Documentation:</b> usage guidelines prevent one-off CSS.",
+              "<b>Deprecation:</b> rename tokens/components with migration windows.",
+              "<b>Audit:</b> find unused tokens, duplicate styles, and specificity outliers."
+            ]
+          }
+        ],
+        "traps": [
+          "A design token for every component prop creates token sprawl",
+          "Visual regression without triage becomes noise",
+          "Global CSS changes need release planning and rollback strategy"
+        ],
+        "checkpoint": [
+          "Design a token governance process.",
+          "How do you prevent CSS drift in a component library?",
+          "What belongs in a visual regression pipeline?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Frontend Engineer interviewing a candidate.\n\nTOPIC: CSS Architecture + Design Tokens (Block 73)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: CSS methodology, tokens, responsive systems, dark mode. 'CSS is drifting', 'design token system', 'choose BEM vs utility CSS'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 74,
+    "phase": "Frontend",
+    "chip": "frontend",
+    "freq": "high",
+    "title": "Next.js Security + Authentication",
+    "subtitle": "Auth patterns, middleware, route protection, cookies, CSRF/CORS",
+    "prereqs": [
+      34
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Auth Patterns",
+            "items": [
+              "<b>Session cookies:</b> server verifies session id. Good for web apps with HttpOnly cookies.",
+              "<b>JWT cookies:</b> stateless token in cookie. Manage expiry, rotation, and revocation.",
+              "<b>OAuth/OIDC:</b> delegate authentication to identity provider. Use Authorization Code + PKCE for browsers.",
+              "<b>Server components:</b> can read server-side auth without exposing tokens to client JS."
+            ]
+          },
+          {
+            "heading": "Middleware",
+            "items": [
+              "<b>Next middleware:</b> runs before route rendering. Good for redirects, rewrites, auth checks.",
+              "<b>Matcher:</b> limit middleware to paths that need it.",
+              "<b>Edge runtime:</b> middleware constraints differ from Node runtime APIs.",
+              "<b>Return early:</b> keep middleware fast to avoid slowing every request."
+            ]
+          }
+        ],
+        "traps": [
+          "Tokens in localStorage are exposed to XSS; prefer HttpOnly cookies when possible",
+          "Middleware on every path can hurt latency",
+          "Client route protection does not protect server APIs"
+        ],
+        "checkpoint": [
+          "Compare session cookies and JWT cookies.",
+          "When should auth live in middleware vs route components?",
+          "Why avoid localStorage for auth tokens?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Route Protection",
+            "items": [
+              "<b>Server-side checks:</b> protect pages, API routes, and server actions.",
+              "<b>Redirects:</b> send unauthenticated users to login with returnTo.",
+              "<b>Forbidden:</b> authenticated users without permission see 403, not login.",
+              "<b>Loading states:</b> avoid redirect loops while session is loading."
+            ]
+          },
+          {
+            "heading": "Cookies + CSRF/CORS",
+            "items": [
+              "<b>HttpOnly:</b> JavaScript cannot read cookie. Reduces XSS token theft.",
+              "<b>Secure:</b> cookie sent only over HTTPS.",
+              "<b>SameSite:</b> Lax or Strict reduces CSRF risk. None requires Secure.",
+              "<b>CORS:</b> controls cross-origin browser requests. It is not authentication."
+            ]
+          }
+        ],
+        "traps": [
+          "CORS does not stop CSRF from forms or simple requests",
+          "SameSite=None without Secure is rejected by browsers",
+          "Middleware redirects must exclude login and callback routes"
+        ],
+        "checkpoint": [
+          "Design protected dashboard routes without redirect loops.",
+          "What cookie flags matter for auth?",
+          "How do CSRF and CORS differ?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Hardening",
+            "items": [
+              "<b>Token rotation:</b> refresh tokens rotate and old tokens are invalidated.",
+              "<b>Logout:</b> clear cookies server-side and revoke refresh tokens.",
+              "<b>CSRF tokens:</b> required for state-changing cookie-authenticated requests when SameSite is insufficient.",
+              "<b>Headers:</b> CSP, HSTS, X-Content-Type-Options, Referrer-Policy."
+            ]
+          },
+          {
+            "heading": "Edge Cases",
+            "items": [
+              "<b>App router:</b> understand server vs client components and where auth data can be read.",
+              "<b>API routes:</b> validate auth and authorization on every mutation.",
+              "<b>SSR caching:</b> never cache personalized auth pages without vary/private controls.",
+              "<b>Incident response:</b> token leakage, cookie theft, and session revocation plan."
+            ]
+          }
+        ],
+        "traps": [
+          "Caching personalized pages can leak user data",
+          "Refresh token rotation must handle reuse detection",
+          "Auth in server actions still needs authorization checks"
+        ],
+        "checkpoint": [
+          "Design token rotation and logout.",
+          "How do you prevent caching leaks for authenticated pages?",
+          "What is your response to stolen auth cookies?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Frontend/Fullstack Engineer interviewing a candidate.\n\nTOPIC: Next.js Security + Authentication (Block 74)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Auth patterns, middleware, cookies, CSRF/CORS, caching. 'Redirect loop', 'token in localStorage', 'protect server actions'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
   }
 ];
 

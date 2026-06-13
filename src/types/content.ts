@@ -29,14 +29,18 @@ export interface Block {
 export type TopicKey =
   | 'java'
   | 'spring'
+  | 'springboot'
+  | 'javascript'
   | 'jsbackend'
   | 'database'
   | 'messaging'
   | 'api'
   | 'infra'
   | 'frontend'
+  | 'html'
   | 'arch'
   | 'behavioral'
   | 'testing'
   | 'devops'
+  | 'cloud'
   | 'typescript';

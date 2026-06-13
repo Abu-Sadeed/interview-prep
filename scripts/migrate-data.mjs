@@ -40,18 +40,22 @@ for (const block of normalized) {
 
 const groups = {
   java: [1, 2, 3, 4, 5, 6, 7, 8],
-  spring: [9, 10, 11, 12, 13, 14, 15, 16, 17],
-  jsbackend: [18, 19, 40, 41, 42, 43, 60, 61, 62],
-  database: [20, 21, 22, 23, 24, 25],
-  messaging: [26, 27],
-  api: [28, 29, 30],
-  infra: [31, 32],
-  frontend: [33, 34, 35, 44, 45, 46, 47, 48, 63],
-  arch: [36, 59],
-  behavioral: [37, 38, 39, 58],
-  testing: [49],
-  devops: [50, 51, 52, 53, 54, 55, 56, 57],
-  typescript: [64],
+  spring: [9, 10, 11, 12, 13, 14, 15, 16],
+  springboot: [17, 68, 69, 70],
+  javascript: [62, 65, 66],
+  jsbackend: [18, 19, 40, 41, 42, 43, 60, 61],
+  database: [20, 21, 22, 23, 24, 25, 75, 76, 77],
+  messaging: [26, 27, 78, 79],
+  api: [28, 29, 30, 80],
+  infra: [31, 32, 84],
+  frontend: [33, 34, 35, 44, 45, 46, 47, 48, 59, 63, 71, 72, 73, 74],
+  html: [67],
+  arch: [36, 37, 81, 82],
+  behavioral: [38, 39, 58],
+  testing: [49, 86],
+  devops: [50, 51, 52, 55, 56, 57, 85],
+  cloud: [53, 54, 83],
+  typescript: [64, 87],
 };
 
 validateGroups(normalized, groups);
@@ -64,7 +68,7 @@ for (const [topic, topicIds] of Object.entries(groups)) {
   fs.writeFileSync(path.join(root, 'src', 'data', `${topic}_content.ts`), content);
 }
 
-const registry = `${header}import javaContent from './java_content';\nimport springContent from './spring_content';\nimport jsbackendContent from './jsbackend_content';\nimport databaseContent from './database_content';\nimport messagingContent from './messaging_content';\nimport apiContent from './api_content';\nimport infraContent from './infra_content';\nimport frontendContent from './frontend_content';\nimport archContent from './arch_content';\nimport behavioralContent from './behavioral_content';\nimport testingContent from './testing_content';\nimport devopsContent from './devops_content';\nimport typescriptContent from './typescript_content';\n\nexport const ALL_BLOCKS: Block[] = [\n  ...javaContent,\n  ...springContent,\n  ...jsbackendContent,\n  ...databaseContent,\n  ...messagingContent,\n  ...apiContent,\n  ...infraContent,\n  ...frontendContent,\n  ...archContent,\n  ...behavioralContent,\n  ...testingContent,\n  ...devopsContent,\n  ...typescriptContent,\n].sort((a, b) => a.id - b.id);\n\nexport const TOPIC_CONTENT = {\n  java: javaContent,\n  spring: springContent,\n  jsbackend: jsbackendContent,\n  database: databaseContent,\n  messaging: messagingContent,\n  api: apiContent,\n  infra: infraContent,\n  frontend: frontendContent,\n  arch: archContent,\n  behavioral: behavioralContent,\n  testing: testingContent,\n  devops: devopsContent,\n  typescript: typescriptContent,\n};\n`;
+const registry = `${header}import javaContent from './java_content';\nimport springContent from './spring_content';\nimport springbootContent from './springboot_content';\nimport javascriptContent from './javascript_content';\nimport jsbackendContent from './jsbackend_content';\nimport databaseContent from './database_content';\nimport messagingContent from './messaging_content';\nimport apiContent from './api_content';\nimport infraContent from './infra_content';\nimport frontendContent from './frontend_content';\nimport htmlContent from './html_content';\nimport archContent from './arch_content';\nimport behavioralContent from './behavioral_content';\nimport testingContent from './testing_content';\nimport devopsContent from './devops_content';\nimport cloudContent from './cloud_content';\nimport typescriptContent from './typescript_content';\n\nexport const ALL_BLOCKS: Block[] = [\n  ...javaContent,\n  ...springContent,\n  ...springbootContent,\n  ...javascriptContent,\n  ...jsbackendContent,\n  ...databaseContent,\n  ...messagingContent,\n  ...apiContent,\n  ...infraContent,\n  ...frontendContent,\n  ...htmlContent,\n  ...archContent,\n  ...behavioralContent,\n  ...testingContent,\n  ...devopsContent,\n  ...cloudContent,\n  ...typescriptContent,\n].sort((a, b) => a.id - b.id);\n\nexport const TOPIC_CONTENT = {\n  java: javaContent,\n  spring: springContent,\n  springboot: springbootContent,\n  javascript: javascriptContent,\n  jsbackend: jsbackendContent,\n  database: databaseContent,\n  messaging: messagingContent,\n  api: apiContent,\n  infra: infraContent,\n  frontend: frontendContent,\n  html: htmlContent,\n  arch: archContent,\n  behavioral: behavioralContent,\n  testing: testingContent,\n  devops: devopsContent,\n  cloud: cloudContent,\n  typescript: typescriptContent,\n};\n`;
 fs.writeFileSync(path.join(root, 'src', 'data', 'content.ts'), registry);
 
 const progress = {
@@ -72,18 +76,22 @@ const progress = {
   generatedAt: new Date().toISOString(),
   dataMigration: {
     java: { file: 'data-part1.js', blocks: '1-8', migrated: true },
-    spring: { file: 'data-part1.js, data-part2.js', blocks: '9-17', migrated: true },
-    jsbackend: { file: 'data-part2.js, data-part4.js', blocks: '18-19, 40-43, 60-62', migrated: true },
-    database: { file: 'data-part2.js', blocks: '20-25', migrated: true },
-    messaging: { file: 'data-part2.js', blocks: '26-27', migrated: true },
-    api: { file: 'data-part3.js', blocks: '28-30', migrated: true },
-    infra: { file: 'data-part3.js', blocks: '31-32', migrated: true },
-    frontend: { file: 'data-part3.js, data-part4.js', blocks: '33-35, 44-48, 63', migrated: true },
-    arch: { file: 'data-part3.js, data-part4.js', blocks: '36, 59', migrated: true },
-    behavioral: { file: 'data-part3.js, data-part4.js', blocks: '37-39, 58', migrated: true },
-    testing: { file: 'data-part4.js', blocks: '49', migrated: true },
-    devops: { file: 'data-part4.js', blocks: '50-57', migrated: true },
-    typescript: { file: 'data-part4.js', blocks: '64', migrated: true },
+    spring: { file: 'data-part1.js, data-part2.js', blocks: '9-16', migrated: true },
+    springboot: { file: 'data-part2.js', blocks: '17, 68-70', migrated: true },
+    javascript: { file: 'data-part4.js', blocks: '62, 65-66', migrated: true },
+    jsbackend: { file: 'data-part2.js, data-part4.js', blocks: '18-19, 40-43, 60-61', migrated: true },
+    database: { file: 'data-part2.js', blocks: '20-25, 75-77', migrated: true },
+    messaging: { file: 'data-part2.js', blocks: '26-27, 78-79', migrated: true },
+    api: { file: 'data-part3.js', blocks: '28-30, 80', migrated: true },
+    infra: { file: 'data-part3.js', blocks: '31-32, 84', migrated: true },
+    frontend: { file: 'data-part3.js, data-part4.js', blocks: '33-35, 44-48, 59, 63, 71-74', migrated: true },
+    html: { file: 'new', blocks: '67', migrated: true },
+    arch: { file: 'data-part3.js, data-part4.js', blocks: '36-37, 81-82', migrated: true },
+    behavioral: { file: 'data-part3.js, data-part4.js', blocks: '38-39, 58', migrated: true },
+    testing: { file: 'data-part4.js', blocks: '49, 86', migrated: true },
+    devops: { file: 'data-part4.js', blocks: '50-52, 55-57, 85', migrated: true },
+    cloud: { file: 'data-part4.js', blocks: '53-54, 83', migrated: true },
+    typescript: { file: 'data-part4.js', blocks: '64, 87', migrated: true },
   },
   componentsCreated: {
     Header: true,

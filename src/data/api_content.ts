@@ -331,6 +331,122 @@ export const apiContent: Block[] = [
       }
     ],
     "grill": "You are a Senior Engineer interviewing a backend candidate on application security.\n\nTOPIC: Security — OWASP + Authentication (Block 30)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Security thinking not just knowledge. Show designs with vulnerabilities — ask to find and fix. Mix attack scenarios with defensive design. 'Find the security bug in this code.'\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 80,
+    "phase": "API + HTTP + Security",
+    "chip": "api",
+    "freq": "med",
+    "title": "GraphQL + gRPC + API Contracts",
+    "subtitle": "GraphQL schema/resolvers, gRPC protobuf, API contracts, versioning trade-offs",
+    "prereqs": [
+      30
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "GraphQL",
+            "items": [
+              "<b>Schema:</b> types, fields, inputs, enums, unions. Schema is the API contract.",
+              "<b>Queries:</b> client asks for fields it needs. Reduces over-fetching.",
+              "<b>Mutations:</b> write operations with input types and predictable errors.",
+              "<b>Resolvers:</b> functions that fetch or compute each field."
+            ]
+          },
+          {
+            "heading": "gRPC",
+            "items": [
+              "<b>Protobuf:</b> strongly typed schema for messages and services.",
+              "<b>HTTP/2:</b> multiplexed streams, binary framing, efficient transport.",
+              "<b>RPC types:</b> unary, server streaming, client streaming, bidirectional streaming.",
+              "<b>Code generation:</b> clients and servers generated from .proto files."
+            ]
+          }
+        ],
+        "traps": [
+          "GraphQL can under-fetch or over-fetch at the resolver level if designed poorly",
+          "gRPC is not browser-friendly without gateways or web implementations",
+          "Protobuf field numbers are part of the contract and should not be reused casually"
+        ],
+        "checkpoint": [
+          "When does GraphQL reduce over-fetching?",
+          "What are the four gRPC RPC types?",
+          "Why are protobuf field numbers stable API surface?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "40 min",
+        "sections": [
+          {
+            "heading": "Contracts",
+            "items": [
+              "<b>OpenAPI:</b> HTTP/REST contracts with paths, schemas, auth, and examples.",
+              "<b>GraphQL schema:</b> contract for queries, mutations, subscriptions, and types.",
+              "<b>Protobuf:</b> contract for messages, services, and streaming behavior.",
+              "<b>Contract tests:</b> verify provider behavior against consumer expectations."
+            ]
+          },
+          {
+            "heading": "Versioning",
+            "items": [
+              "<b>REST:</b> URI/header/media-type versioning or backward-compatible evolution.",
+              "<b>GraphQL:</b> deprecate fields, add fields, avoid breaking type changes.",
+              "<b>gRPC:</b> add fields with new numbers, reserve old numbers, keep services additive.",
+              "<b>Compatibility:</b> choose strategy based on public clients and deployment cadence."
+            ]
+          }
+        ],
+        "traps": [
+          "Contracts without tests drift from implementation",
+          "GraphQL deprecations need a removal window and monitoring",
+          "Reusing protobuf field numbers breaks binary compatibility"
+        ],
+        "checkpoint": [
+          "Compare OpenAPI, GraphQL schema, and protobuf as contracts.",
+          "How do you deprecate a GraphQL field safely?",
+          "What is the safest gRPC schema evolution?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Runtime Concerns",
+            "items": [
+              "<b>GraphQL N+1:</b> resolver per field can cause many DB calls. Use DataLoader or batching.",
+              "<b>Query complexity:</b> limit depth, cost, aliases, and field count to prevent abuse.",
+              "<b>gRPC deadlines:</b> set timeouts so cascading calls fail fast.",
+              "<b>Gateways:</b> expose gRPC internally and REST/JSON externally when useful."
+            ]
+          },
+          {
+            "heading": "Governance",
+            "items": [
+              "<b>Schema ownership:</b> define who can change public contracts and how.",
+              "<b>Breaking changes:</b> require migration plan, deprecation period, and consumer coordination.",
+              "<b>Observability:</b> trace operation name, resolver latency, protobuf method, and status codes.",
+              "<b>Backward compatibility CI:</b> fail builds on incompatible schema changes."
+            ]
+          }
+        ],
+        "traps": [
+          "GraphQL flexibility can become unbounded query cost without limits",
+          "gRPC deadlines are essential in service chains",
+          "Gateway translation can hide useful error semantics if not designed carefully"
+        ],
+        "checkpoint": [
+          "Prevent GraphQL query complexity attacks.",
+          "How do you set deadlines across gRPC calls?",
+          "Design governance for a public API used by many teams."
+        ]
+      }
+    ],
+    "grill": "You are a Senior API Engineer interviewing a candidate.\n\nTOPIC: GraphQL + gRPC + API Contracts (Block 80)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: API contract trade-offs, schema evolution, runtime risks. 'Choose REST vs GraphQL vs gRPC', 'GraphQL N+1', 'protobuf evolution'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
   }
 ];
 

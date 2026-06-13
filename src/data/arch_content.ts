@@ -92,41 +92,59 @@ export const archContent: Block[] = [
     "grill": "You are a Senior Engineer interviewing a candidate.\n\nTOPIC: Design Patterns Applied to Your Stack (Block 36)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Code-level questioning, anti-patterns, refactoring.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
   },
   {
-    "id": 59,
+    "id": 37,
     "phase": "Architecture & Design",
     "chip": "arch",
-    "freq": "med",
-    "title": "System Design — Frontend Architecture",
-    "subtitle": "Micro-frontends, design systems, performance budgets, SSR vs CSR trade-offs, monorepo structure",
+    "freq": "high",
+    "title": "System Design Round",
+    "subtitle": "Designing scalable systems, trade-offs, and failure modes from a staff/principal engineer perspective",
+    "prereqs": [],
+    "tiers": [],
+    "grill": "You are a Principal Engineer interviewing a senior candidate.\n\nTOPIC: System Design Round (Block 37)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Design Twitter/Facebook/URL shortener. Focus on bottlenecks, cache layers, consistency models, circuit breakers.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 81,
+    "phase": "Architecture & Design",
+    "chip": "arch",
+    "freq": "high",
+    "title": "System Design Foundations",
+    "subtitle": "Requirements, capacity estimation, bottlenecks, caching, queues, consistency",
     "prereqs": [
-      35,
-      48
+      37
     ],
     "tiers": [
       {
         "level": "Beginner",
-        "time": "30 min",
+        "time": "35 min",
         "sections": [
           {
-            "heading": "Frontend Architecture Patterns",
+            "heading": "Requirements",
             "items": [
-              "<b>Monolithic frontend:</b> one app, one deployment. Simple. Fine for most applications.",
-              "<b>Micro-frontends:</b> independently deployed frontend modules. Each team owns their section. Compose at runtime (Module Federation) or build time.",
-              "<b>When micro-frontends:</b> multiple teams working on same frontend, different deployment cadences needed, different tech stacks. Not for small apps.",
-              "<b>Design system:</b> shared component library + design tokens + documentation. Single source of visual truth. Storybook for development + documentation.",
-              "<b>Monorepo:</b> all frontend packages in one repo. Shared code easy. Turborepo/Nx for build caching and task orchestration."
+              "<b>Functional requirements:</b> what the system must do. Clarify users, actions, and success criteria.",
+              "<b>Non-functional requirements:</b> latency, availability, consistency, durability, security, compliance.",
+              "<b>Scope:</b> define what is out of scope before drawing components.",
+              "<b>Constraints:</b> team size, budget, legacy systems, regulatory requirements."
+            ]
+          },
+          {
+            "heading": "Capacity Estimation",
+            "items": [
+              "<b>QPS:</b> estimate DAU, requests per user, peak multiplier.",
+              "<b>Storage:</b> object size × events per day × retention.",
+              "<b>Bandwidth:</b> bytes per response × requests per second.",
+              "<b>Back-of-envelope:</b> order-of-magnitude estimates are enough for interviews."
             ]
           }
         ],
         "traps": [
-          "Micro-frontends add complexity — don't adopt without clear multi-team problem to solve",
-          "Design system without governance = diverges from production UI over time — need dedicated ownership",
-          "Monorepo without build caching = CI time grows with every added package — always add Turborepo/Nx"
+          "Jumping to components before requirements leads to the wrong design",
+          "Averaging hides peak traffic and hot keys",
+          "Ignoring write amplification underestimates storage and I/O"
         ],
         "checkpoint": [
-          "When would you choose micro-frontends over a monolithic frontend?",
-          "What is a design system and how is it different from a component library?",
-          "What problem does Turborepo solve in a monorepo?"
+          "Estimate QPS for a URL shortener with 10M DAU.",
+          "What non-functional requirements matter for a payments API?",
+          "How do you define scope for a system design interview?"
         ]
       },
       {
@@ -134,34 +152,33 @@ export const archContent: Block[] = [
         "time": "40 min",
         "sections": [
           {
-            "heading": "Rendering Strategy at Scale",
+            "heading": "Core Components",
             "items": [
-              "<b>CSR (Client-Side Rendering):</b> empty HTML, JS fetches data, renders. Slow initial load, fast navigation. Poor SEO without SSR.",
-              "<b>SSR (Server-Side Rendering):</b> HTML from server per request. Good SEO, fast initial paint. Server load, complex caching.",
-              "<b>SSG (Static Generation):</b> HTML at build time. CDN-served. Fastest. Not for dynamic per-user content.",
-              "<b>Islands Architecture:</b> mostly static HTML, small interactive islands hydrated independently. Astro. Best performance, SEO + interactivity.",
-              "<b>Decision framework:</b> public marketing content → SSG. User-specific dashboard → CSR. Mixed content + SEO → Next.js SSR/ISR."
+              "<b>Load balancer:</b> distributes traffic and terminates TLS.",
+              "<b>Stateless services:</b> scale horizontally behind load balancer.",
+              "<b>Cache:</b> reduce read latency and database load. Define invalidation.",
+              "<b>Queue:</b> buffer work, smooth bursts, and decouple producers/consumers."
             ]
           },
           {
-            "heading": "Performance Architecture",
+            "heading": "Bottlenecks",
             "items": [
-              "<b>Performance budget:</b> set limits on JS bundle size, LCP, CLS, INP before development. Fail CI when exceeded. Prevents gradual bloat.",
-              "<b>Critical CSS:</b> inline CSS for above-the-fold content. Eliminate render-blocking external stylesheets for first paint.",
-              "<b>Font loading strategy:</b> font-display: swap (show fallback immediately). Preload critical fonts. Subset fonts (only include used characters).",
-              "<b>Image optimization:</b> WebP/AVIF formats. Next.js next/image for automatic optimisation. Responsive images with srcset."
+              "<b>Identify:</b> CPU, memory, disk I/O, network, database locks, external API limits.",
+              "<b>Measure:</b> latency percentiles, saturation, error rate, queue depth.",
+              "<b>Scale:</b> vertical for simple bottlenecks, horizontal for stateless workloads.",
+              "<b>Trade-offs:</b> every scale choice affects cost, complexity, and failure modes."
             ]
           }
         ],
         "traps": [
-          "SSR without caching = every request hits the server = expensive and slow. Cache SSR output at CDN or in-process.",
-          "Inlining too much CSS defeats the point — only critical above-the-fold CSS. Lazy load the rest.",
-          "Font flash of invisible text (FOIT) vs flash of unstyled text (FOUT) — font-display: swap causes FOUT which is usually preferable"
+          "Adding cache without invalidation creates stale data",
+          "Horizontal scaling does not help a single database write bottleneck",
+          "Queues hide overload but do not remove it"
         ],
         "checkpoint": [
-          "I have a SaaS dashboard with user-specific data and a public marketing site. Which rendering strategy for each and why?",
-          "What is the Islands Architecture and when does it make sense over Next.js?",
-          "How do you prevent JavaScript bundle size from growing over time?"
+          "Where is the bottleneck in a read-heavy news feed?",
+          "How do queues help during traffic spikes?",
+          "What metrics reveal cache invalidation problems?"
         ]
       },
       {
@@ -169,29 +186,153 @@ export const archContent: Block[] = [
         "time": "30 min",
         "sections": [
           {
-            "heading": "Advanced Frontend System Design",
+            "heading": "Consistency",
             "items": [
-              "<b>State sync at scale:</b> multiple browser tabs sharing state. BroadcastChannel API for cross-tab messaging. SharedWorker for shared computation.",
-              "<b>Offline-first (PWA):</b> Service Worker caches assets and API responses. Background sync for offline actions. Works without network.",
-              "<b>Feature flags at frontend:</b> server-driven flags (fetch on load), SDK-based (LaunchDarkly), edge-based (Vercel Edge Config). Separate deploy from release.",
-              "<b>A/B testing architecture:</b> variant assignment at edge (no flash). Analytics event tracking. Statistical significance before declaring winner.",
-              "<b>Web security for frontends:</b> CSP headers, Subresource Integrity (SRI) for CDN scripts, iframe sandboxing, postMessage origin validation."
+              "<b>Strong consistency:</b> reads see latest write. Higher latency and lower availability under partition.",
+              "<b>Eventual consistency:</b> replicas converge over time. Better availability and scale.",
+              "<b>Read-your-writes:</b> user sees their own updates immediately.",
+              "<b>Consistency model:</b> choose based on user impact and business invariants."
+            ]
+          },
+          {
+            "heading": "Failure Modes",
+            "items": [
+              "<b>Retries:</b> must be bounded and idempotent where side effects exist.",
+              "<b>Circuit breakers:</b> stop calling failing dependencies temporarily.",
+              "<b>Backpressure:</b> slow producers when consumers or DB cannot keep up.",
+              "<b>Graceful degradation:</b> return partial results instead of full outage."
             ]
           }
         ],
         "traps": [
-          "Service Worker update not propagating — users stuck on old version. Use skipWaiting() + clients.claim() with care.",
-          "Feature flags evaluated on client = user can see which features are hidden. Server-side evaluation for sensitive features.",
-          "postMessage without origin validation = cross-origin script injection. Always validate event.origin."
+          "Strong consistency everywhere is usually too expensive",
+          "Unbounded retries amplify outages",
+          "Eventual consistency needs reconciliation and user-visible expectations"
         ],
         "checkpoint": [
-          "How do you implement a PWA that works completely offline?",
-          "Design a feature flag system for a React frontend. What are the options and trade-offs?",
-          "What is Subresource Integrity (SRI) and when do you use it?"
+          "Design consistency for a social feed.",
+          "How do you prevent retry storms?",
+          "What does graceful degradation look like for search?"
         ]
       }
     ],
-    "grill": "You are a Senior Frontend/Fullstack Engineer interviewing a candidate on frontend architecture.\n\nTOPIC: Frontend System Design (Block 59)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Design scenarios ('design the frontend architecture for a large SaaS product with 5 teams'), trade-off probes ('why SSR here and not SSG'), and performance design ('how do you ensure this stays fast as the team grows').\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+    "grill": "You are a Principal Engineer interviewing a senior candidate.\n\nTOPIC: System Design Foundations (Block 81)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Requirements, estimation, bottlenecks, caching, queues, consistency. 'Design this from scratch', 'where is the bottleneck', 'choose consistency model'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 82,
+    "phase": "Architecture & Design",
+    "chip": "arch",
+    "freq": "high",
+    "title": "Microservices + DDD",
+    "subtitle": "Bounded contexts, aggregates, service boundaries, distributed transactions",
+    "prereqs": [
+      81
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Bounded Contexts",
+            "items": [
+              "<b>Bounded context:</b> explicit boundary where a domain model has a specific meaning.",
+              "<b>Ubiquitous language:</b> terms are shared within a context, not necessarily across the whole company.",
+              "<b>Context map:</b> shows relationships: partnership, customer-supplier, conformist, anticorruption layer.",
+              "<b>Service boundary:</b> align services with cohesive domain responsibilities."
+            ]
+          },
+          {
+            "heading": "Aggregates",
+            "items": [
+              "<b>Aggregate root:</b> entry point that protects invariants.",
+              "<b>Consistency boundary:</b> transactional changes should stay inside one aggregate when possible.",
+              "<b>References:</b> other aggregates referenced by ID, not object graph.",
+              "<b>Small aggregates:</b> reduce contention and lock duration."
+            ]
+          }
+        ],
+        "traps": [
+          "Microservices are not just small monoliths connected by HTTP",
+          "Splitting by technical layer creates distributed monoliths",
+          "Large aggregates cause contention and slow transactions"
+        ],
+        "checkpoint": [
+          "Define bounded contexts for an ecommerce system.",
+          "What makes a good aggregate boundary?",
+          "Why is splitting by database table dangerous?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "40 min",
+        "sections": [
+          {
+            "heading": "Service Communication",
+            "items": [
+              "<b>Synchronous APIs:</b> simple request/response. Good for immediate decisions, risky for long chains.",
+              "<b>Events:</b> decouple services and model domain facts. Prefer for cross-context state changes.",
+              "<b>Outbox:</b> publish events reliably after local transaction.",
+              "<b>API composition:</b> aggregate read models from multiple services for queries."
+            ]
+          },
+          {
+            "heading": "Distributed Transactions",
+            "items": [
+              "<b>Avoid distributed ACID:</b> it couples availability and operations.",
+              "<b>Saga:</b> coordinate long-running workflows with compensation.",
+              "<b>Idempotency:</b> retries and duplicate events must be safe.",
+              "<b>Eventual consistency:</b> design user flows around convergence."
+            ]
+          }
+        ],
+        "traps": [
+          "Synchronous call chains create cascading failures",
+          "Saga compensation is not automatic rollback",
+          "Shared database across services breaks bounded contexts"
+        ],
+        "checkpoint": [
+          "Design communication for order and payment services.",
+          "When is a saga better than 2PC?",
+          "How do you keep read models eventually consistent?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Evolution",
+            "items": [
+              "<b>Strangler pattern:</b> migrate functionality incrementally behind facades or gateways.",
+              "<b>Anti-corruption layer:</b> translate between old and new domain models.",
+              "<b>Contract testing:</b> prevent breaking changes between services.",
+              "<b>Data migration:</b> expand/contract schema changes for zero-downtime migration."
+            ]
+          },
+          {
+            "heading": "Operations",
+            "items": [
+              "<b>Observability:</b> trace requests across service boundaries.",
+              "<b>Deployment autonomy:</b> teams should deploy without coordinating every release.",
+              "<b>Ownership:</b> service team owns code, data, operations, and on-call.",
+              "<b>Platform guardrails:</b> CI/CD, service templates, secrets, and observability standards."
+            ]
+          }
+        ],
+        "traps": [
+          "Big-bang rewrites create high risk and low learning",
+          "Contract tests do not replace end-to-end smoke tests",
+          "Service ownership without operational ownership creates handoff failures"
+        ],
+        "checkpoint": [
+          "How would you migrate a monolith module to a service?",
+          "Design expand/contract migration for a shared table.",
+          "What platform guardrails enable autonomous teams?"
+        ]
+      }
+    ],
+    "grill": "You are a Staff Engineer interviewing a candidate.\n\nTOPIC: Microservices + DDD (Block 82)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Bounded contexts, service boundaries, sagas, migration. 'Split this monolith', 'distributed transaction problem', 'migration strategy'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
   }
 ];
 

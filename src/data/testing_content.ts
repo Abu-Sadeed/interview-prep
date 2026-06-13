@@ -107,6 +107,122 @@ export const testingContent: Block[] = [
       }
     ],
     "grill": "You are a Senior Engineer interviewing a candidate on testing philosophy.\n\nTOPIC: Testing Philosophy + Strategies (Block 49)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Test strategy decisions ('how would you test this system'), philosophy probes ('what should you not test'), and production scenarios ('CI is slow, tests are flaky — what do you do').\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
+  },
+  {
+    "id": 86,
+    "phase": "Cross-Cutting",
+    "chip": "testing",
+    "freq": "high",
+    "title": "Testing Implementation Patterns",
+    "subtitle": "Unit/integration/e2e setup, mocks vs fakes, Testcontainers, CI test strategy",
+    "prereqs": [
+      49
+    ],
+    "tiers": [
+      {
+        "level": "Beginner",
+        "time": "30 min",
+        "sections": [
+          {
+            "heading": "Test Setup",
+            "items": [
+              "<b>Test files:</b> colocate tests with code or group by feature. Choose consistency over dogma.",
+              "<b>Fixtures:</b> reusable setup data and helpers. Keep them small and readable.",
+              "<b>Isolation:</b> reset mocks, DB state, timers, and random seeds between tests.",
+              "<b>Assertions:</b> assert observable behavior and important edge cases, not implementation details."
+            ]
+          },
+          {
+            "heading": "Mocks vs Fakes",
+            "items": [
+              "<b>Mock:</b> verifies interactions at a boundary. Use sparingly.",
+              "<b>Fake:</b> simplified working implementation, such as in-memory repository.",
+              "<b>Stub:</b> returns canned responses. Does not verify calls.",
+              "<b>Boundary rule:</b> mock external systems, test your own logic directly."
+            ]
+          }
+        ],
+        "traps": [
+          "Over-mocking makes tests brittle and shallow",
+          "Shared fixtures that mutate cause flaky tests",
+          "Testing private implementation details blocks refactoring"
+        ],
+        "checkpoint": [
+          "When would you use a fake instead of a mock?",
+          "How do you reset state between tests?",
+          "What should a unit test avoid asserting?"
+        ]
+      },
+      {
+        "level": "Intermediate",
+        "time": "35 min",
+        "sections": [
+          {
+            "heading": "Integration Tests",
+            "items": [
+              "<b>Real dependencies:</b> use Postgres, Redis, Kafka, or HTTP servers when behavior depends on them.",
+              "<b>Testcontainers:</b> start containers for integration tests with real versions.",
+              "<b>Migrations:</b> run schema migrations before tests. Avoid hand-written test schemas that drift.",
+              "<b>Transactions:</b> wrap tests in transactions when possible, but know isolation limits."
+            ]
+          },
+          {
+            "heading": "E2E Tests",
+            "items": [
+              "<b>Critical paths:</b> login, checkout, publish, admin workflow. Keep E2E count small.",
+              "<b>Stable selectors:</b> test user-visible behavior, not CSS internals.",
+              "<b>Parallelism:</b> isolate users/data to avoid cross-test interference.",
+              "<b>Screenshots/video:</b> attach artifacts on failure for fast debugging."
+            ]
+          }
+        ],
+        "traps": [
+          "Integration tests against local-only containers can hide environment differences",
+          "E2E tests that duplicate unit/integration coverage slow CI",
+          "Shared test users cause flaky parallel runs"
+        ],
+        "checkpoint": [
+          "Design integration tests for a payment service.",
+          "How do Testcontainers improve confidence?",
+          "Which user journeys deserve E2E coverage?"
+        ]
+      },
+      {
+        "level": "Advanced",
+        "time": "25 min",
+        "sections": [
+          {
+            "heading": "CI Strategy",
+            "items": [
+              "<b>Fast lane:</b> lint, typecheck, unit tests on every PR.",
+              "<b>Slow lane:</b> integration/e2e on main, release branches, or scheduled runs.",
+              "<b>Sharding:</b> split tests across runners to keep feedback fast.",
+              "<b>Flake management:</b> quarantine, label, investigate, and fix root cause."
+            ]
+          },
+          {
+            "heading": "Test Architecture",
+            "items": [
+              "<b>Test data builders:</b> create valid domain objects with sensible defaults.",
+              "<b>Contract tests:</b> verify API/event contracts between services.",
+              "<b>Mutation testing:</b> check whether tests fail when code is intentionally mutated.",
+              "<b>Maintainability:</b> tests are production code; refactor helpers and remove duplication."
+            ]
+          }
+        ],
+        "traps": [
+          "Retrying flakes without fixing them creates false confidence",
+          "Too many slow tests on every PR slows engineering velocity",
+          "Contract tests do not replace local integration tests for internal behavior"
+        ],
+        "checkpoint": [
+          "Design a CI test matrix for a monorepo.",
+          "How do you handle a flaky integration test?",
+          "What makes a test suite maintainable?"
+        ]
+      }
+    ],
+    "grill": "You are a Senior Engineer interviewing a candidate on testing implementation.\n\nTOPIC: Testing Implementation Patterns (Block 86)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Test setup, mocks/fakes, integration tests, Testcontainers, CI strategy. 'Tests are flaky', 'mock or fake?', 'design CI test matrix'.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
   }
 ];
 

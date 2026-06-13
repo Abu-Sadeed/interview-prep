@@ -2,17 +2,6 @@ import type { Block } from '../types/content';
 
 export const behavioralContent: Block[] = [
   {
-    "id": 37,
-    "phase": "Behaviourial",
-    "chip": "soft",
-    "freq": "high",
-    "title": "System Design Round",
-    "subtitle": "Designing scalable systems, trade-offs, and failure modes from a staff/principal engineer perspective",
-    "prereqs": [],
-    "tiers": [],
-    "grill": "You are a Principal Engineer interviewing a senior candidate.\n\nTOPIC: System Design Round (Block 37)\n\nYOUR ROLE: Reactive Socratic interviewer.\n\nAPPROACH: Design Twitter/Facebook/URL shortener. Focus on bottlenecks, cache layers, consistency models, circuit breakers.\n\nRULES: One question. React. 6–8 exchanges. PASS/BORDERLINE/FAIL.\n\nBEGIN."
-  },
-  {
     "id": 38,
     "phase": "Behaviourial",
     "chip": "soft",
