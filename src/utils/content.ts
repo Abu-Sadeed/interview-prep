@@ -3,27 +3,25 @@ import type { Block } from '../types/content';
 
 const DONE_KEY = 'prep_done';
 
-export function readDoneBlocks(): Set<number> {
+export function readDoneBlocks(): Set<string> {
   try {
     const raw = localStorage.getItem(DONE_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
     return new Set(
       Array.isArray(parsed)
-        ? parsed
-            .map(Number)
-            .filter((id) => Number.isFinite(id) && ALL_BLOCKS.some((block) => block.id === id))
+        ? parsed.filter((id): id is string => typeof id === 'string' && ALL_BLOCKS.some((block) => block.id === id))
         : [],
     );
   } catch {
-    return new Set<number>();
+    return new Set<string>();
   }
 }
 
-export function writeDoneBlocks(done: Set<number>) {
-  localStorage.setItem(DONE_KEY, JSON.stringify([...done].sort((a, b) => a - b)));
+export function writeDoneBlocks(done: Set<string>) {
+  localStorage.setItem(DONE_KEY, JSON.stringify([...done].sort((a, b) => a.localeCompare(b))));
 }
 
-export function getBlockById(id: number): Block | undefined {
+export function getBlockById(id: string): Block | undefined {
   return ALL_BLOCKS.find((block) => block.id === id);
 }
 
@@ -35,9 +33,9 @@ export function groupBlocksByPhase(blocks: Block[] = ALL_BLOCKS) {
   }, {});
 }
 
-export function parsePrereqs(value: string): number[] {
+export function parsePrereqs(value: string): string[] {
   return value
     .split(/[,\s]+/)
-    .map((part) => Number(part.trim()))
-    .filter((value) => Number.isFinite(value) && value > 0);
+    .map((part) => part.trim())
+    .filter(Boolean);
 }

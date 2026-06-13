@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function useTierState(blockId: number, count: number) {
+export function useTierState(blockId: string, count: number) {
   const [open, setOpen] = useState(() => {
     return Array.from({ length: count }, (_, index) => {
       const key = `tier_${blockId}_${index}`;

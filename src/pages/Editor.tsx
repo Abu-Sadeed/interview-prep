@@ -15,14 +15,14 @@ const tierSchema = z.object({
 });
 
 const blockSchema = z.object({
-  id: z.number().int().positive(),
+  id: z.string().min(1),
   phase: z.string().min(1),
   chip: z.string().min(1),
   freq: z.enum(['high', 'med', 'low']),
   title: z.string().min(1),
   subtitle: z.string().min(1),
-  prereqs: z.array(z.number().int().positive()),
-  tiers: z.array(tierSchema).min(1),
+  prereqs: z.array(z.string().min(1)),
+  tiers: z.array(tierSchema),
   grill: z.string().min(1),
 });
 
@@ -42,7 +42,6 @@ const topicOptions: TopicOption[] = [
   { key: 'html', label: 'HTML + Web Semantics', phase: 'Frontend', chip: 'html' },
   { key: 'arch', label: 'Architecture & Design', phase: 'Architecture & Design', chip: 'arch' },
   { key: 'behavioral', label: 'Behavioral & Career', phase: 'Behavioral & Career', chip: 'arch' },
-  { key: 'testing', label: 'Testing', phase: 'Cross-Cutting', chip: 'testing' },
   { key: 'devops', label: 'DevOps', phase: 'DevOps', chip: 'infra' },
   { key: 'cloud', label: 'Cloud', phase: 'Cloud', chip: 'aws' },
   { key: 'typescript', label: 'TypeScript', phase: 'JavaScript', chip: 'ts' },
@@ -53,7 +52,7 @@ const chipOptions = Array.from(new Set(ALL_BLOCKS.map((block) => block.chip))).s
 export function Editor() {
   const [topic, setTopic] = useState<TopicKey>('java');
   const [form, setForm] = useState<Block>({
-    id: getNextBlockId(),
+    id: getNextBlockId('java'),
     phase: 'Java Fundamentals',
     chip: 'java',
     freq: 'high',
@@ -146,7 +145,7 @@ export function Editor() {
           </label>
           <label className="form-group">
             Block ID
-            <input type="number" value={form.id} onChange={(event) => update('id', Number(event.target.value))} className="form-input" />
+            <input type="text" value={form.id} onChange={(event) => update('id', event.target.value)} className="form-input" />
           </label>
           <label className="form-group">
             Chip
@@ -167,7 +166,7 @@ export function Editor() {
           </label>
           <label className="form-group" style={{ gridColumn: 'span 2' }}>
             Prerequisites
-            <input value={form.prereqs.join(', ')} onChange={(event) => update('prereqs', parsePrereqs(event.target.value))} placeholder="1, 2, 9" className="form-input" />
+            <input value={form.prereqs.join(', ')} onChange={(event) => update('prereqs', parsePrereqs(event.target.value))} placeholder="java-1, spring-1" className="form-input" />
           </label>
           <label className="form-group" style={{ gridColumn: 'span 2' }}>
             Tiers JSON
@@ -186,7 +185,7 @@ export function Editor() {
         <div className="form-actions">
           <button type="button" onClick={validate} className="form-btn form-btn-primary">Validate</button>
           <button type="button" onClick={download} className="form-btn form-btn-success">Download topic file</button>
-          <button type="button" onClick={() => { const option = topicOptions.find((item) => item.key === topic); setForm({ id: getNextBlockId(), phase: option?.phase || form.phase, chip: option?.chip || form.chip, freq: 'high', title: '', subtitle: '', prereqs: [], tiers: [], grill: '' }); setTierJson('[]'); setErrors([]); }} className="form-btn form-btn-ghost">Reset</button>
+          <button type="button" onClick={() => { const option = topicOptions.find((item) => item.key === topic); setForm({ id: getNextBlockId(topic), phase: option?.phase || form.phase, chip: option?.chip || form.chip, freq: 'high', title: '', subtitle: '', prereqs: [], tiers: [], grill: '' }); setTierJson('[]'); setErrors([]); }} className="form-btn form-btn-ghost">Reset</button>
         </div>
       </section>
       <aside className="editor-panel">
@@ -215,6 +214,12 @@ function parseTiers(value: string): { ok: true; value: Tier[] } | { ok: false; v
   }
 }
 
-function getNextBlockId() {
-  return Math.max(...ALL_BLOCKS.map((block) => block.id), 0) + 1;
+function getNextBlockId(topicKey: TopicKey) {
+  const topicBlocks = TOPIC_CONTENT[topicKey] || [];
+  const maxSeq = topicBlocks.reduce((max, block) => {
+    const match = block.id.match(new RegExp(`^${topicKey}-(\\d+)$`));
+    return match ? Math.max(max, Number(match[1])) : max;
+  }, 0);
+
+  return `${topicKey}-${maxSeq + 1}`;
 }

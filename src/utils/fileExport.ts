@@ -13,6 +13,6 @@ export function downloadTextFile(fileName: string, content: string) {
 }
 
 export function serializeContentFile(topic: TopicKey, blocks: Block[]) {
-  const sorted = [...blocks].sort((a, b) => a.id - b.id);
+  const sorted = [...blocks].sort((a, b) => a.id.localeCompare(b.id));
   return `import type { Block } from '../types/content';\n\nexport const ${topic}Content: Block[] = ${JSON.stringify(sorted, null, 2)};\n\nexport default ${topic}Content;\n`;
 }

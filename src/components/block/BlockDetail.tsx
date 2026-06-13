@@ -15,13 +15,13 @@ const tierLabels = [
 ];
 
 export function BlockDetail() {
-	const {id} = useParams();
+	const {id = ''} = useParams();
 	const navigate = useNavigate();
-	const block = getBlockById(Number(id));
+	const block = getBlockById(id);
 	const {done, toggleDone} = useProgress();
 	const [grillTier, setGrillTier] = useState(0);
 	const [copied, setCopied] = useState(false);
-	const {open, toggle} = useTierState(Number(id), block?.tiers.length || 0);
+	const {open, toggle} = useTierState(id, block?.tiers.length || 0);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);

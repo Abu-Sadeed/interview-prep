@@ -93,7 +93,7 @@ export function Sidebar() {
   );
 }
 
-function PhaseGroup({ phase, blocks, done, activePath }: { phase: string; blocks: Block[]; done: Set<number>; activePath: string }) {
+function PhaseGroup({ phase, blocks, done, activePath }: { phase: string; blocks: Block[]; done: Set<string>; activePath: string }) {
   return (
     <section className="phase-group">
       <div className="phase-label">{phase}</div>

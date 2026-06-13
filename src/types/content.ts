@@ -15,13 +15,13 @@ export interface Tier {
 }
 
 export interface Block {
-  id: number;
+  id: string;
   phase: string;
   chip: Chip;
   freq: Frequency;
   title: string;
   subtitle: string;
-  prereqs: number[];
+  prereqs: string[];
   tiers: Tier[];
   grill: string;
 }
@@ -31,6 +31,7 @@ export type TopicKey =
   | 'spring'
   | 'springboot'
   | 'javascript'
+  | 'typescript'
   | 'jsbackend'
   | 'database'
   | 'messaging'
@@ -40,7 +41,7 @@ export type TopicKey =
   | 'html'
   | 'arch'
   | 'behavioral'
-  | 'testing'
   | 'devops'
   | 'cloud'
-  | 'typescript';
+  | 'golang'
+  | 'godot';
