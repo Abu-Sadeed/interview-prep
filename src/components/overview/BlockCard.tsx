@@ -1,23 +1,21 @@
-import { Link } from 'react-router-dom';
-import type { Block } from '../../types/content';
-import { chipClass, freqClass, freqLabel } from '../../utils/classes';
+import {Link} from 'react-router-dom';
+import type {Block} from '../../types/content';
+import {chipClass, freqClass, freqLabel} from '../../utils/classes';
 
 interface BlockCardProps {
 	block: Block;
 }
 
-export function BlockCard({ block }: BlockCardProps) {
+export function BlockCard({block}: BlockCardProps) {
 	return (
 		<Link
 			to={`/block/${block.id}`}
 			className="card"
 			style={{
-				display: 'grid',
-				gridTemplateColumns: 'auto 1fr auto',
-				alignItems: 'center',
-				gap: '1rem',
+				display: 'flex',
+				flexDirection: 'column',
+				gap: '0.5rem',
 				padding: '0.75rem 1rem',
-				textDecoration: 'none',
 				color: 'inherit',
 			}}>
 			<span
@@ -42,10 +40,11 @@ export function BlockCard({ block }: BlockCardProps) {
 					style={{
 						fontSize: '0.5625rem',
 						fontWeight: 400,
-						color: 'var(--color-text3)',
+						color: 'var(--color-text2)',
 						marginTop: '2px',
 					}}>
-					{block.title.split(' — ')[1] || block.subtitle.split(',')[0]}
+					{block.title.split(' — ')[1] ||
+						block.subtitle.split(',')[0]}
 				</div>
 			</div>
 			<div

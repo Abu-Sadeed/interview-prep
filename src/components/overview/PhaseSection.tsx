@@ -1,12 +1,12 @@
-import type { Block } from '../../types/content';
-import { BlockCard } from './BlockCard';
+import type {Block} from '../../types/content';
+import {BlockCard} from './BlockCard';
 
 interface PhaseSectionProps {
 	phase: string;
 	blocks: Block[];
 }
 
-export function PhaseSection({ phase, blocks }: PhaseSectionProps) {
+export function PhaseSection({phase, blocks}: Readonly<PhaseSectionProps>) {
 	return (
 		<section style={{marginBottom: '2rem'}}>
 			<h2
@@ -26,7 +26,8 @@ export function PhaseSection({ phase, blocks }: PhaseSectionProps) {
 				style={{
 					display: 'grid',
 					gap: '0.5rem',
-					gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
+					gridTemplateColumns:
+						'repeat(auto-fill, minmax(280px, 1fr))',
 				}}>
 				{blocks.map((block) => (
 					<BlockCard key={block.id} block={block} />
