@@ -253,6 +253,41 @@
 	color: var(--color-text3);
 }
 
+.phase-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	cursor: pointer;
+	text-align: left;
+	background: transparent;
+	border: none;
+	padding: 0.5rem 1rem 0.25rem;
+	transition: color 150ms;
+}
+
+.phase-header:hover {
+	color: var(--color-text2);
+}
+
+.phase-header:hover .phase-label {
+	color: var(--color-text2);
+}
+
+.phase-header:hover .phase-chevron {
+	color: var(--color-text2);
+}
+
+.phase-chevron {
+	font-size: 0.625rem;
+	color: var(--color-text3);
+	transition: transform 150ms, color 150ms;
+}
+
+.phase-chevron.expanded {
+	transform: rotate(180deg);
+}
+
 .nav-link {
 	display: flex;
 	align-items: center;
@@ -379,9 +414,13 @@
     padding: 0.5rem 0;
   }
 
-  .app-sidebar.collapsed .phase-label {
-    display: none;
-  }
+.app-sidebar.collapsed .phase-label {
+     display: none;
+   }
+
+   .app-sidebar.collapsed .phase-header {
+     display: none;
+   }
 
   .app-sidebar.collapsed .nav-link {
     justify-content: center;

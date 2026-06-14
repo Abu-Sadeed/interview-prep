@@ -108,7 +108,23 @@
 }
 
 .dark .nav-link-dot-idle {
-	background: #475569;
+  background: #475569;
+}
+
+.dark .phase-header:hover {
+  color: #cbd5e1;
+}
+
+.dark .phase-header:hover .phase-label {
+  color: #cbd5e1;
+}
+
+.dark .phase-header:hover .phase-chevron {
+  color: #cbd5e1;
+}
+
+.dark .phase-chevron {
+  color: var(--color-text3);
 }
 
 .dark .stat-card {
