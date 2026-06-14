@@ -428,11 +428,8 @@ body {
 	background: #0f1318;
 }
 
-.dark .editor-title {
-	color: #f3f4f6;
-}
 
-.dark .form-input {
+.editor-panel {
 	border-color: #334155;
 	background: #111827;
 	color: #e5e7eb;
@@ -1597,18 +1594,6 @@ ul.tier-list > .rich-html::before {
 	border: 1px solid var(--color-border);
 	background: var(--color-bg2);
 	padding: 1.25rem;
-}
-
-.editor-title {
-	margin-bottom: 0.5rem;
-	font-size: 1.5rem;
-	font-weight: 700;
-	color: var(--color-text);
-}
-
-.editor-subtitle {
-	margin-bottom: 1.25rem;
-	color: var(--color-text2);
 }
 
 .form-group {

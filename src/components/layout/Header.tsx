@@ -13,7 +13,6 @@ export function Header({ completed, total, percent }: HeaderProps) {
       <Link to="/" className="app-header-brand">
         senior<em className="app-header-brand-muted">.</em>prep <em className="app-header-brand-muted">// v4.0</em>
       </Link>
-      <Link to="/editor" className="app-btn" style={{ textDecoration: 'none' }}>+ Add Content</Link>
       <div className="progress-track">
         <div className="progress-fill" style={{ width: `${percent}%` }} />
       </div>
