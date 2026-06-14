@@ -1,20 +1,25 @@
 import { useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ALL_BLOCKS } from '../../data/content';
 import type { Block } from '../../types/content';
 import { useProgress } from '../../hooks/useProgress';
 import { groupBlocksByPhase } from '../../utils/content';
-import { freqClass } from '../../utils/classes';
+import { PhaseGroup } from './PhaseGroup';
 
 const filters: Array<'all' | 'high' | 'med' | 'low'> = ['all', 'high', 'med', 'low'];
+
+const activeFilterClasses: Record<string, string> = {
+  all: 'filter-btn-active-all',
+  high: 'filter-btn-active-high',
+  med: 'filter-btn-active-med',
+  low: 'filter-btn-active-low',
+};
 
 export function Sidebar() {
   const location = useLocation();
   const { done } = useProgress();
   const [query, setQuery] = useState('');
   const [activeFreq, setActiveFreq] = useState<'all' | 'high' | 'med' | 'low'>('all');
-
-  console.log('[Sidebar] Rendering, activeFreq:', activeFreq);
 
   const phases = useMemo(() => groupBlocksByPhase(ALL_BLOCKS), []);
   const normalizedQuery = query.trim().toLowerCase();
@@ -57,18 +62,8 @@ export function Sidebar() {
           <button
             key={filter}
             type="button"
-            onClick={() => { console.log('[Filter] clicked:', filter); setActiveFreq(filter); }}
-            className={`filter-btn ${
-              activeFreq === filter
-                ? filter === 'all'
-                  ? 'filter-btn-active-all'
-                  : filter === 'high'
-                    ? 'filter-btn-active-high'
-                    : filter === 'med'
-                      ? 'filter-btn-active-med'
-                      : 'filter-btn-active-low'
-                : ''
-            }`}
+            onClick={() => setActiveFreq(filter)}
+            className={`filter-btn ${activeFreq === filter ? activeFilterClasses[filter] : ''}`}
           >
             {filter === 'all' ? (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
@@ -109,29 +104,5 @@ export function Sidebar() {
         ))}
       </nav>
     </aside>
-  );
-}
-
-function PhaseGroup({ phase, blocks, done, activePath }: { phase: string; blocks: Block[]; done: Set<string>; activePath: string }) {
-  console.log('[PhaseGroup]', phase, 'blocks count:', blocks.length, 'ids:', blocks.map(b => b.id));
-  return (
-    <section className="phase-group">
-      <div className="phase-label">{phase}</div>
-      {blocks.map((block) => {
-        const isDone = done.has(block.id);
-        const isActive = activePath === `/block/${block.id}`;
-        return (
-          <Link
-            key={block.id}
-            to={`/block/${block.id}`}
-            className={`nav-link ${isActive ? 'nav-link-active' : ''} ${isDone ? 'nav-link-done' : ''}`}
-          >
-            <span className="nav-link-title">{block.title.split(' — ')[0]}</span>
-            <span className={`nav-link-freq ${freqClass(block.freq)}`}>{block.freq.toUpperCase()}</span>
-            <span className={`nav-link-dot ${isDone ? 'nav-link-dot-done' : isActive ? 'nav-link-dot-active' : 'nav-link-dot-idle'}`} />
-          </Link>
-        );
-      })}
-    </section>
   );
 }
