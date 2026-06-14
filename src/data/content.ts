@@ -51,6 +51,9 @@ import { behavioralAdvanced } from './behavioral/behavioral_advanced';
 import { testingBeginner } from './testing/testing_beginner';
 import { testingIntermediate } from './testing/testing_intermediate';
 import { testingAdvanced } from './testing/testing_advanced';
+import { golangBeginner } from './golang/golang_beginner';
+import { golangIntermediate } from './golang/golang_intermediate';
+import { golangAdvanced } from './golang/golang_advanced';
 
 const tierRank: Record<Tier['level'], number> = { Beginner: 0, Intermediate: 1, Advanced: 2 };
 
@@ -87,6 +90,7 @@ const cloud = mergeTierBlocks([...cloudBeginner, ...cloudIntermediate, ...cloudA
 const arch = mergeTierBlocks([...archBeginner, ...archIntermediate, ...archAdvanced]);
 const behavioral = mergeTierBlocks([...behavioralBeginner, ...behavioralIntermediate, ...behavioralAdvanced]);
 const testing = mergeTierBlocks([...testingBeginner, ...testingIntermediate, ...testingAdvanced]);
+const golang = mergeTierBlocks([...golangBeginner, ...golangIntermediate, ...golangAdvanced]);
 
 export const ALL_BLOCKS: Block[] = [
   ...java,
@@ -94,6 +98,7 @@ export const ALL_BLOCKS: Block[] = [
   ...springboot,
   ...js,
   ...typescript,
+  ...golang,
   ...jsbackend,
   ...frontend,
   ...html,
@@ -114,6 +119,7 @@ export const TOPIC_CONTENT: Record<string, Block[]> = {
   springboot,
   javascript: js,
   typescript,
+  golang,
   jsbackend,
   frontend,
   html,
