@@ -428,7 +428,6 @@ body {
 	background: #0f1318;
 }
 
-
 .editor-panel {
 	border-color: #334155;
 	background: #111827;
@@ -603,7 +602,7 @@ body {
 .app {
 	min-height: 100vh;
 	display: grid;
-	grid-template-columns: 272px minmax(0, 1fr);
+	grid-template-columns: 350px minmax(0, 1fr);
 	flex: 1;
 }
 
