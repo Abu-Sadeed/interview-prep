@@ -3,6 +3,20 @@
 	background: var(--color-bg);
 }
 
+.dark .sidebar-toggle {
+	border-color: var(--color-border2);
+	color: var(--color-text3);
+}
+
+.dark .sidebar-toggle:hover {
+	border-color: var(--color-blue);
+	color: var(--color-blue);
+}
+
+.dark .sidebar-overlay {
+	background: rgba(0, 0, 0, 0.5);
+}
+
 .dark .app-header-brand {
 	color: var(--color-blue);
 }
