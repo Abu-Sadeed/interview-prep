@@ -14,14 +14,33 @@ export function Sidebar() {
   const [query, setQuery] = useState('');
   const [activeFreq, setActiveFreq] = useState<'all' | 'high' | 'med' | 'low'>('all');
 
+  console.log('[Sidebar] Rendering, activeFreq:', activeFreq);
+
   const phases = useMemo(() => groupBlocksByPhase(ALL_BLOCKS), []);
   const normalizedQuery = query.trim().toLowerCase();
 
-  const visibleCount = ALL_BLOCKS.filter((block) => {
-    const matchesSearch = !normalizedQuery || block.title.toLowerCase().includes(normalizedQuery);
-    const matchesFreq = activeFreq === 'all' || block.freq === activeFreq;
-    return matchesSearch && matchesFreq;
-  }).length;
+  const filteredPhases = useMemo(() => {
+    const result: Record<string, Block[]> = {};
+    Object.entries(phases).forEach(([phase, blocks]) => {
+      const filtered = blocks.filter((block) => {
+        const matchesSearch =
+          !normalizedQuery ||
+          block.title.toLowerCase().includes(normalizedQuery) ||
+          (typeof block.subtitle === 'string' && block.subtitle.toLowerCase().includes(normalizedQuery));
+        const matchesFreq = activeFreq === 'all' || block.freq === activeFreq;
+        return matchesSearch && matchesFreq;
+      });
+      if (filtered.length > 0) {
+        result[phase] = filtered;
+      }
+    });
+    return result;
+  }, [phases, normalizedQuery, activeFreq]);
+
+  const visibleCount = useMemo(
+    () => Object.values(filteredPhases).reduce((sum, blocks) => sum + blocks.length, 0),
+    [filteredPhases],
+  );
 
   return (
     <aside className="app-sidebar">
@@ -38,7 +57,7 @@ export function Sidebar() {
           <button
             key={filter}
             type="button"
-            onClick={() => setActiveFreq(filter)}
+            onClick={() => { console.log('[Filter] clicked:', filter); setActiveFreq(filter); }}
             className={`filter-btn ${
               activeFreq === filter
                 ? filter === 'all'
@@ -85,7 +104,7 @@ export function Sidebar() {
         </div>
       )}
       <nav className="nav">
-        {Object.entries(phases).map(([phase, blocks]) => (
+        {Object.entries(filteredPhases).map(([phase, blocks]) => (
           <PhaseGroup key={phase} phase={phase} blocks={blocks} done={done} activePath={location.pathname} />
         ))}
       </nav>
@@ -94,6 +113,7 @@ export function Sidebar() {
 }
 
 function PhaseGroup({ phase, blocks, done, activePath }: { phase: string; blocks: Block[]; done: Set<string>; activePath: string }) {
+  console.log('[PhaseGroup]', phase, 'blocks count:', blocks.length, 'ids:', blocks.map(b => b.id));
   return (
     <section className="phase-group">
       <div className="phase-label">{phase}</div>
