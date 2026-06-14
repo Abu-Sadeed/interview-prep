@@ -240,7 +240,6 @@
 }
 
 .phase-label {
-	padding: 0.5rem 1rem 0.25rem;
 	font-family:
 		JetBrains Mono,
 		ui-monospace,
@@ -260,13 +259,25 @@
 	width: 100%;
 	cursor: pointer;
 	text-align: left;
-	background: transparent;
+	background: var(--color-bg3);
 	border: none;
-	padding: 0.5rem 1rem 0.25rem;
-	transition: color 150ms;
+	border-bottom: 1px solid var(--color-border);
+	padding: 0.5rem 1rem;
+	font-family:
+		JetBrains Mono,
+		ui-monospace,
+		SFMono-Regular,
+		monospace;
+	font-size: 0.5625rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-text3);
+	transition: background-color 150ms, color 150ms;
 }
 
 .phase-header:hover {
+	background: var(--color-bg4);
 	color: var(--color-text2);
 }
 

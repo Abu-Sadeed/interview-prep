@@ -113,6 +113,7 @@
 
 .dark .phase-header:hover {
   color: #cbd5e1;
+  background: #1b2230;
 }
 
 .dark .phase-header:hover .phase-label {
@@ -121,6 +122,10 @@
 
 .dark .phase-header:hover .phase-chevron {
   color: #cbd5e1;
+}
+
+.dark .phase-header {
+  background: #151a22;
 }
 
 .dark .phase-chevron {

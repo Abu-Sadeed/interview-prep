@@ -14,13 +14,14 @@ Make each phase group in the sidebar a collapsible dropdown so users can expand/
 - Block links conditionally rendered: `{expanded && blocks.map(...)}`
 
 ### `src/styles/layout.css`
-- Added `.phase-header` with flex layout, cursor pointer, and hover states
+- Added `.phase-header` with flex layout, background, border-bottom, padding, font styles, and hover states
 - Added `.phase-chevron` with 150ms transform transition
 - Added `.phase-chevron.expanded { transform: rotate(180deg); }`
 - Added `.app-sidebar.collapsed .phase-header` to hide in collapsed sidebar
 
 ### `src/styles/dark.css`
-- Added dark mode hover styles for `.phase-header` and `.phase-chevron`
+- Added `.dark .phase-header` with background color (#151a22)
+- Added `.dark .phase-header:hover` with hover background (#1b2230) and text color (#cbd5e1)
 
 ## Validation
 - Build verified: `npm run build` ✓
